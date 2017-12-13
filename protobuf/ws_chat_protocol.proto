@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package ws_chat_protocol;
+
+message ws_msg_connected
+{
+	int64		time = 1;  	// time
+	int32		rid = 2;  		// rid
+	int32		uid = 3;		// uid
+	string		msg = 4;		// msg
+}
+
+message ws_msg_error
+{
+	int64		time = 1;  	// time
+	int32		code = 2;    // code
+	string		msg = 3;		// msg
+}
+
+message ws_msg_chat_request
+{
+	int64		time = 1;  	// time
+	int32		rid = 2;  		// rid
+	int32		from = 3;  	// ufrom
+	int32		to = 4;  		// uto
+	string		msg = 5;		// msg
+}
+
+message ws_msg_chat_replay
+{
+	int64		time = 1;  	// time
+	int32		code = 2;   // code
+	int32		from = 3;   // from
+	string		msg = 4;	 // msg
+}
+
