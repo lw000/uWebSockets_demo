@@ -15,6 +15,8 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
 
+#include "log4z.h"
+
 ServerBorkerMessage::ServerBorkerMessage() {
 	this->setMessageCallback(
 			CC_MSG_CALLBACK_4(ServerBorkerMessage::onMessage, this));
@@ -35,13 +37,13 @@ int ServerBorkerMessage::onMessage(uWS::WebSocket<uWS::SERVER> *ws, int cmd,
 		ws_chat_protocol::ws_msg_connected con;
 		bool r = con.ParseFromArray(message, length);
 		if (r) {
-			printf("%ld,%s\n", con.time(), con.msg().c_str());
+			LOGFMTD("%ld,%s", con.time(), con.msg().c_str());
 		}
 	} else if (cmd == MESSAGE_CMD_CHAT) {
 		ws_chat_protocol::ws_msg_chat_request chat;
 		bool r = chat.ParseFromArray(message, length);
 		if (r) {
-			printf("time: %ld, from: %d, to: %d, msg: %s\n", chat.time(),
+			LOGFMTD("time: %ld, from: %d, to: %d, msg: %s", chat.time(),
 					chat.from(), chat.to(), chat.msg().c_str());
 
 			ws_chat_protocol::ws_msg_chat_replay replay;
@@ -63,7 +65,7 @@ int ServerBorkerMessage::onMessage(uWS::WebSocket<uWS::SERVER> *ws, int cmd,
 			delete buff;
 		}
 	} else {
-		printf("cmd: %d\n", cmd);
+		LOGFMTD("cmd: %d", cmd);
 	}
 	return 0;
 }

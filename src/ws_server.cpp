@@ -6,6 +6,7 @@
 #include <string>
 
 #include <uWS/uWS.h>
+
 #include "utils.h"
 
 #include "rapidjson/rapidjson.h"
@@ -14,14 +15,16 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
 
-//#ifdef __cplusplus
-//extern "C" {
-//#endif
-//#include "urlparser.h"
-//
-//#ifdef __cplusplus
-//}
-//#endif
+#include "log4z.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+#include "urlparser.h"
+
+#ifdef __cplusplus
+}
+#endif
 
 #include "ws_chat_protocol.pb.h"
 #include "ws_command.h"
@@ -39,7 +42,7 @@ int test_wb_server(int argc, char** argv) {
 
 	__g_index_html << std::ifstream("index.html").rdbuf();
 	if (!__g_index_html.str().length()) {
-		std::cerr << "Failed to load index.html" << std::endl;
+		LOGD("Failed to load index.html");
 		return -1;
 	}
 
@@ -47,7 +50,7 @@ int test_wb_server(int argc, char** argv) {
 			[](uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length) {
 				UserSession<uWS::SERVER>* session = (UserSession<uWS::SERVER>*)ws->getUserData();
 				session->pings++;
-				printf("client[%d] pongs[%d]\n", session->uid, session->pings);
+				LOGFMTD("client[%d] pongs[%d]\n", session->uid, session->pings);
 
 				//					if (c->pings >= c->pongs) {
 				//						printf("close client[%d] \n", c->uid);
@@ -58,30 +61,30 @@ int test_wb_server(int argc, char** argv) {
 	h.onConnection(
 			[](uWS::WebSocket<uWS::SERVER> *ws, uWS::HttpRequest req) {
 				std::string url = req.getUrl().toString();
-				printf( "url: %s\n", url.c_str());
+				LOGFMTD( "url: %s\n", url.c_str());
 
 				std::string path;
-// 				URL purl;
-// 
-// 				int c = parseURL(url.c_str(), &purl);
-// 				if (c == 0) {
-// 					path = readURLField(url.c_str(), purl.path);
-// 				}
-// 
-// 				if (path.compare("/ws") != 0) {
-// 					ws->close(10002);
-// 					return;
-// 				}
-// 
-// 				std::string query;
-// 				if (c == 0) {
-// 					query = readURLField(url.c_str(), purl.query);
-// 				}
-// 
-// 				if (query.empty()) {
-// 					ws->close(10002);
-// 					return;
-// 				}
+ 				URL purl;
+
+ 				int c = parseURL(url.c_str(), &purl);
+ 				if (c == 0) {
+ 					path = readURLField(url.c_str(), purl.path);
+ 				}
+
+ 				if (path.compare("/ws") != 0) {
+ 					ws->close(10002);
+ 					return;
+ 				}
+
+ 				std::string query;
+ 				if (c == 0) {
+ 					query = readURLField(url.c_str(), purl.query);
+ 				}
+
+ 				if (query.empty()) {
+ 					ws->close(10002);
+ 					return;
+ 				}
 
 				std::string t_name;
 				std::string t_upsd;
@@ -89,55 +92,53 @@ int test_wb_server(int argc, char** argv) {
 				std::string t_uid;
 				std::string t_extra;
 
-// 				KVQueryUrlArgsValue queryArgs;
-// 				int c1 = queryArgs.parse(query.c_str());
-// 				if (c1 != 0) {
-// 					ws->close(10002);
-// 					return;
-// 				}
-// 
-// 				t_name = queryArgs.find("name");
-// 				t_upsd = queryArgs.find("upsd");
-// 				t_rid = queryArgs.find("rid");
-// 				t_uid = queryArgs.find("uid");
-// 				t_extra = queryArgs.find("extra");
-// 				if (t_name.empty()) {
-// 					ws->close(10001, "username error.", strlen("username error."));
-// 					return;
-// 				}
-// 
-// 				if (t_upsd.empty()) {
-// 					ws->close(10001, "password error.", strlen("password error."));
-// 					return;
-// 				}
-// 
-// 				if (t_rid.empty()) {
-// 					ws->close(10001, "rid error.", strlen("rid error."));
-// 					return;
-// 				}
-// 
-// 				if (t_uid.empty()) {
-// 					ws->close(10001, "uid error.", strlen("uid error."));
-// 					return;
-// 				}
-// 
-// 				if (t_extra.empty()) {
-// 					ws->close(10001, "extra error.", strlen("extra error."));
-// 					return;
-// 				}
+ 				KVQueryUrlArgsValue queryArgs;
+ 				int c1 = queryArgs.parse(query.c_str());
+ 				if (c1 != 0) {
+ 					ws->close(10002);
+ 					return;
+ 				}
 
-				printf( "name: %s, upsd: %s, rid: %s, uid: %s, extra: %s\n", t_name.c_str(), t_upsd.c_str(),t_rid.c_str(),t_uid.c_str(),t_extra.c_str());
+ 				t_name = queryArgs.find("name");
+ 				t_upsd = queryArgs.find("upsd");
+ 				t_rid = queryArgs.find("rid");
+ 				t_uid = queryArgs.find("uid");
+ 				t_extra = queryArgs.find("extra");
+ 				if (t_name.empty()) {
+ 					ws->close(10001, "username error.", strlen("username error."));
+ 					return;
+ 				}
+
+ 				if (t_upsd.empty()) {
+ 					ws->close(10001, "password error.", strlen("password error."));
+ 					return;
+ 				}
+
+ 				if (t_rid.empty()) {
+ 					ws->close(10001, "rid error.", strlen("rid error."));
+ 					return;
+ 				}
+
+ 				if (t_uid.empty()) {
+ 					ws->close(10001, "uid error.", strlen("uid error."));
+ 					return;
+ 				}
+
+ 				if (t_extra.empty()) {
+ 					ws->close(10001, "extra error.", strlen("extra error."));
+ 					return;
+ 				}
+
+ 				LOGFMTD( "name: %s, upsd: %s, rid: %s, uid: %s, extra: %s\n", t_name.c_str(), t_upsd.c_str(),t_rid.c_str(),t_uid.c_str(),t_extra.c_str());
 
 				unsigned int rid = atoi(t_rid.c_str());
 				unsigned int uid = atoi(t_uid.c_str());
 
-//				UserSession* session = new UserSession();
 				UserSession<uWS::SERVER>* session = new UserSession<uWS::SERVER>();
+				session->ws =ws;
 				session->rid = rid;
 				session->uid = uid;
 				ws->setUserData(session);
-
-				printf( "onConnection uid:  %d\n", session->uid);
 
 #if 0
 			{
@@ -166,7 +167,7 @@ int test_wb_server(int argc, char** argv) {
 	h.onDisconnection(
 			[](uWS::WebSocket<uWS::SERVER> *ws, int code, char * message, size_t length) {
 				UserSession<uWS::SERVER>* session = (UserSession<uWS::SERVER>*)ws->getUserData();
-				printf("onDisconnection client [%d]\n", session->uid);
+				LOGFMTD("onDisconnection client [%d]\n", session->uid);
 				delete session;
 			});
 
@@ -197,7 +198,7 @@ int test_wb_server(int argc, char** argv) {
 					}
 				} else if (opCode == uWS::OpCode::TEXT) {
 
-					printf("rid: %d, uid: %d, received:%s\n", session->rid, session->uid, std::string(message, length).c_str());
+					LOGFMTD("rid: %d, uid: %d, received:%s\n", session->rid, session->uid, std::string(message, length).c_str());
 
 					h.getDefaultGroup<uWS::SERVER>().broadcast(message, length, uWS::OpCode::TEXT);
 
@@ -221,31 +222,31 @@ int test_wb_server(int argc, char** argv) {
 				}
 
 				std::string url = req.getUrl().toString();
-				printf( "url: %s\n", url.c_str());
+				LOGFMTD( "url: %s\n", url.c_str());
 
 				std::string path;
 				std::string query;
 
-// 				URL purl;
-// 				int c = parseURL(url.c_str(), &purl);
-// 				if (c == 0) {
-// 					path = readURLField(url.c_str(), purl.path);
-// 					query = readURLField(url.c_str(), purl.query);
-// 				}
-// 
-// 				if (!path.empty()) {
-// 					if (path.compare("/") == 0) {
-// 						res->end(__g_index_html.str().data(), __g_index_html.str().length());
-// 					}
-// 					else if (path.compare("room_user_count") == 0) {
-// 
-// 					}
-// 					else if (path.compare("mul") == 0) {
-// 
-// 					} else {
-// 
-// 					}
-// 				}
+ 				URL purl;
+ 				int c = parseURL(url.c_str(), &purl);
+ 				if (c == 0) {
+ 					path = readURLField(url.c_str(), purl.path);
+ 					query = readURLField(url.c_str(), purl.query);
+ 				}
+
+ 				if (!path.empty()) {
+ 					if (path.compare("/") == 0) {
+ 						res->end(__g_index_html.str().data(), __g_index_html.str().length());
+ 					}
+ 					else if (path.compare("room_user_count") == 0) {
+
+ 					}
+ 					else if (path.compare("mul") == 0) {
+
+ 					} else {
+
+ 					}
+ 				}
 
 			});
 
@@ -253,11 +254,12 @@ int test_wb_server(int argc, char** argv) {
 
 	if (h.listen(3000)) {
 		std::cout << "Success to listen 3000" << std::endl;
+
+		h.run();
+
 	} else {
 		std::cout << "Failed to listen 3000" << std::endl;
 	}
-
-	h.run();
 
 	return 0;
 }

@@ -42,10 +42,10 @@ public:
 
 	}
 
-public:
-	void setWS(uWS::WebSocket<isServer> *ws);
+//public:
+//	void setWS(uWS::WebSocket<isServer> *ws);
 
-private:
+public:
 	uWS::WebSocket<isServer> *ws;
 };
 

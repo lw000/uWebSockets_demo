@@ -21,7 +21,7 @@
 //
 //}
 
-template<bool isServer>
-void UserSession<isServer>::setWS(typename uWS::WebSocket<isServer> *ws) {
-	this->ws = ws;
-}
+//template<bool isServer>
+//void UserSession<isServer>::setWS(typename uWS::WebSocket<isServer> *ws) {
+//	this->ws = ws;
+//}
