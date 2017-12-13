@@ -248,15 +248,17 @@ int test_wb_server(int argc, char** argv) {
 				else if (opCode == uWS::OpCode::TEXT) {
 
 //					LOGFMTD("rid: %d, uid: %d, received:%s", session->rid, session->uid, std::string(message, length).c_str());
-					__g_session_mgr.foreach([session, &h, message, length](UserSession<uWS::SERVER>* s) {
-						if (session->rid == s->rid) {
-							s->getWS()->send(message, length, uWS::OpCode::TEXT);
-						}
 
-						if (session->rid == 0) {
-							h.getDefaultGroup<uWS::SERVER>().broadcast(message, length, uWS::OpCode::TEXT);
-						}
-					});
+					if (session->rid == 0) {
+						h.getDefaultGroup<uWS::SERVER>().broadcast(message, length, uWS::OpCode::TEXT);
+					}
+					else {
+						__g_session_mgr.foreach([session, &h, message, length](UserSession<uWS::SERVER>* s) {
+									if (session->rid == s->rid) {
+										s->getWS()->send(message, length, uWS::OpCode::TEXT);
+									}
+								});
+					}
 				}
 				else {
 					std::string msg("error.");
