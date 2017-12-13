@@ -26,6 +26,9 @@ class SessionMgr {
 		void removeSession(UserSession<uWS::SERVER>* s);
 		void removeSession(int rid, int uid);
 
+	public:
+		void foreach(std::function<void(UserSession<uWS::SERVER>* s)> func);
+
 	private:
 		std::unordered_map<int, std::list<UserSession<uWS::SERVER>*>*> _sessions;
 		std::mutex _m;

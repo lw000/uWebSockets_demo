@@ -27,28 +27,45 @@ void SessionMgr::addSession(UserSession<uWS::SERVER>* s) {
 
 	{
 		std::unique_lock<std::mutex> l(_m);
+		std::unordered_map<int, std::list<UserSession<uWS::SERVER>*>*>::iterator search =
+				_sessions.end();
 		if (_sessions.empty()) {
-			std::list<UserSession<uWS::SERVER>*>* li = new std::list<
-					UserSession<uWS::SERVER>*>();
+			li = new std::list<UserSession<uWS::SERVER>*>();
 
 			_sessions.insert(
 					std::pair<int, std::list<UserSession<uWS::SERVER>*>*>(
 							s->rid, li));
 		}
 		else {
-			li = _sessions.at(s->rid);
-		}
+			search = _sessions.find(s->rid);
+			if (search == _sessions.end()) {
+				li = new std::list<UserSession<uWS::SERVER>*>();
 
-		UserSession<uWS::SERVER>* o = nullptr;
-		for (auto l : (*li)) {
-			if (l->uid == s->uid) {
-				o = l;
-				break;
+				_sessions.insert(
+						std::pair<int, std::list<UserSession<uWS::SERVER>*>*>(
+								s->rid, li));
+			}
+			else {
+				li = search->second;
 			}
 		}
 
-		if (o == nullptr) {
-			li->push_back(s);
+		if (li != nullptr) {
+			if (li->empty()) {
+				li->push_back(s);
+			}
+			else {
+				UserSession<uWS::SERVER>* o = nullptr;
+				for (auto l : (*li)) {
+					if (l->uid == s->uid) {
+						o = l;
+						break;
+					}
+				}
+				if (o == nullptr) {
+					li->push_back(s);
+				}
+			}
 		}
 	}
 }
@@ -85,4 +102,20 @@ void SessionMgr::removeSession(UserSession<uWS::SERVER>* s) {
 
 void SessionMgr::removeSession(int rid, int uid) {
 
+}
+
+void SessionMgr::foreach(
+		std::function<void(UserSession<uWS::SERVER>* s)> func) {
+	{
+		std::unique_lock<std::mutex> l(_m);
+		if (_sessions.empty()) {
+			return;
+		}
+
+		for (auto v : _sessions) {
+			for (auto l : (*v.second)) {
+				func(l);
+			}
+		}
+	}
 }

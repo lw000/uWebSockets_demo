@@ -98,7 +98,7 @@ int test_wb_server(int argc, char** argv) {
 	h.onConnection(
 			[](uWS::WebSocket<uWS::SERVER> *ws, uWS::HttpRequest req) {
 				std::string url = req.getUrl().toString();
-				LOGFMTD( "url: %s\n", url.c_str());
+				LOGFMTD( "url: %s", url.c_str());
 
 				std::string path;
 				URL purl;
@@ -198,6 +198,12 @@ int test_wb_server(int argc, char** argv) {
 			}
 #else
 			std::string msg("connected success.");
+			msg += " [rid: ";
+			msg += t_rid;
+			msg += ", uid: ";
+			msg += t_uid;
+			msg += "]";
+
 			ws->send(msg.c_str(), msg.length(), uWS::OpCode::TEXT);
 #endif
 		});
@@ -206,7 +212,7 @@ int test_wb_server(int argc, char** argv) {
 			[](uWS::WebSocket<uWS::SERVER> *ws, int code, char * message, size_t length) {
 				UserSession<uWS::SERVER>* session = (UserSession<uWS::SERVER>*)ws->getUserData();
 				if (session != nullptr) {
-					LOGFMTD("onDisconnection client [%d]", session->uid);
+					LOGFMTD("onDisconnection. [%d]", session->uid);
 					__g_session_mgr.removeSession(session);
 					delete session;
 				}
@@ -241,10 +247,16 @@ int test_wb_server(int argc, char** argv) {
 				}
 				else if (opCode == uWS::OpCode::TEXT) {
 
-					LOGFMTD("rid: %d, uid: %d, received:%s", session->rid, session->uid, std::string(message, length).c_str());
+//					LOGFMTD("rid: %d, uid: %d, received:%s", session->rid, session->uid, std::string(message, length).c_str());
+					__g_session_mgr.foreach([session, &h, message, length](UserSession<uWS::SERVER>* s) {
+						if (session->rid == s->rid) {
+							s->getWS()->send(message, length, uWS::OpCode::TEXT);
+						}
 
-					h.getDefaultGroup<uWS::SERVER>().broadcast(message, length, uWS::OpCode::TEXT);
-
+						if (session->rid == 0) {
+							h.getDefaultGroup<uWS::SERVER>().broadcast(message, length, uWS::OpCode::TEXT);
+						}
+					});
 				}
 				else {
 					std::string msg("error.");

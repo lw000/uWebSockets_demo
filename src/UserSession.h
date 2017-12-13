@@ -15,40 +15,44 @@
 
 template<bool isServer>
 class UserSession {
-public:
-	unsigned int rid;
-	unsigned int uid;
-	std::string name;
-	std::string upsd;
-	std::string extra;
+	public:
+		unsigned int rid;
+		unsigned int uid;
+		std::string name;
+		std::string upsd;
+		std::string extra;
 
-public:
-	std::atomic<unsigned int> count;
+	public:
+		std::atomic<unsigned int> count;
 
-public:
-	int pings;
-	int pongs;
+	public:
+		int pings;
+		int pongs;
 
-public:
-	UserSession(uWS::WebSocket<isServer> *ws) {
-		this->rid = 0;
-		this->uid = 0;
-		this->pings = 0;
-		this->pongs = 3;
-		this->ws = ws;
-	}
+	public:
+		UserSession(uWS::WebSocket<isServer> *ws) {
+			this->rid = 0;
+			this->uid = 0;
+			this->pings = 0;
+			this->pongs = 3;
+			this->ws = ws;
+		}
 
-	virtual ~UserSession(){
+		virtual ~UserSession() {
 
-	}
+		}
 
-public:
-	void setWS(uWS::WebSocket<isServer> *ws) {
-		this->ws = ws;
-	}
+	public:
+		void setWS(uWS::WebSocket<isServer> *ws) {
+			this->ws = ws;
+		}
 
-private:
-	uWS::WebSocket<isServer> *ws;
+		uWS::WebSocket<isServer> * getWS() {
+			return this->ws;
+		}
+
+	private:
+		uWS::WebSocket<isServer> *ws;
 };
 
 #endif /* USERSESSION_H_ */
