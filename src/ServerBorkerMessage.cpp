@@ -39,7 +39,8 @@ int ServerBorkerMessage::onMessage(uWS::WebSocket<uWS::SERVER> *ws, int cmd,
 		if (r) {
 			LOGFMTD("%ld,%s", con.time(), con.msg().c_str());
 		}
-	} else if (cmd == MESSAGE_CMD_CHAT) {
+	}
+	else if (cmd == MESSAGE_CMD_CHAT) {
 		ws_chat_protocol::ws_msg_chat_request chat;
 		bool r = chat.ParseFromArray(message, length);
 		if (r) {
@@ -55,8 +56,8 @@ int ServerBorkerMessage::onMessage(uWS::WebSocket<uWS::SERVER> *ws, int cmd,
 			char* buff = new char[len];
 			bool r = replay.SerializeToArray(buff, len);
 			if (r) {
-				TransportData trans(TransportData::TYPE::build);
-				int c = trans.buildData(MESSAGE_CMD_CHAT_REPLAY, buff, len);
+				TransportData trans(TransportData::TYPE::encode);
+				int c = trans.build(MESSAGE_CMD_CHAT_REPLAY, buff, len);
 				if (c == 0) {
 					ws->send(trans.getBuffer(), trans.getBufferLength(),
 							uWS::OpCode::BINARY);
@@ -64,7 +65,8 @@ int ServerBorkerMessage::onMessage(uWS::WebSocket<uWS::SERVER> *ws, int cmd,
 			}
 			delete buff;
 		}
-	} else {
+	}
+	else {
 		LOGFMTD("cmd: %d", cmd);
 	}
 	return 0;

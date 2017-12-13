@@ -22,9 +22,9 @@ int main(int argc, char**argv) {
 
 	ILog4zManager::getInstance()->start();
 
-	if (s.compare("s") == 0) {
+	if (s.compare("-s") == 0) {
 		test_wb_server(argc, argv);
-	} else if (s.compare("c") == 0) {
+	} else if (s.compare("-c") == 0) {
 		test_wb_client(argc, argv);
 	} else {
 

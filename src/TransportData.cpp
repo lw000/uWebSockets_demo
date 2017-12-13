@@ -27,27 +27,27 @@ int TransportData::getCmd() const {
 }
 
 int TransportData::getBufferLength() {
-	if (this->t == TYPE::build) {
+	if (this->t == TYPE::encode) {
 		return this->length;
 	}
-	if (this->t == TYPE::parse) {
+	if (this->t == TYPE::decode) {
 		return this->length - sizeof(int);
 	}
 	return -1;
 }
 
 char* TransportData::getBuffer() {
-	if (this->t == TYPE::build) {
+	if (this->t == TYPE::encode) {
 		return this->message;
 	}
-	if (this->t == TYPE::parse) {
+	if (this->t == TYPE::decode) {
 		return &this->message[sizeof(int)];
 	}
 
 	return NULL;
 }
 
-int TransportData::buildData(int cmd, char* msg, int length) {
+int TransportData::build(int cmd, char* msg, int length) {
 	if (this->message != NULL) {
 		delete[] this->message;
 		this->message = NULL;
@@ -64,7 +64,7 @@ int TransportData::buildData(int cmd, char* msg, int length) {
 	return 0;
 }
 
-int TransportData::parseData(char* msg, int length) {
+int TransportData::parse(char* msg, int length) {
 	if (this->message != NULL) {
 		delete[] this->message;
 		this->message = NULL;

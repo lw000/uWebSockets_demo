@@ -64,27 +64,27 @@ int test_wb_server(int argc, char** argv) {
 				LOGFMTD( "url: %s\n", url.c_str());
 
 				std::string path;
- 				URL purl;
+				URL purl;
 
- 				int c = parseURL(url.c_str(), &purl);
- 				if (c == 0) {
- 					path = readURLField(url.c_str(), purl.path);
- 				}
+				int c = parseURL(url.c_str(), &purl);
+				if (c == 0) {
+					path = readURLField(url.c_str(), purl.path);
+				}
 
- 				if (path.compare("/ws") != 0) {
- 					ws->close(10002);
- 					return;
- 				}
+				if (path.compare("/ws") != 0) {
+					ws->close(10002);
+					return;
+				}
 
- 				std::string query;
- 				if (c == 0) {
- 					query = readURLField(url.c_str(), purl.query);
- 				}
+				std::string query;
+				if (c == 0) {
+					query = readURLField(url.c_str(), purl.query);
+				}
 
- 				if (query.empty()) {
- 					ws->close(10002);
- 					return;
- 				}
+				if (query.empty()) {
+					ws->close(10002);
+					return;
+				}
 
 				std::string t_name;
 				std::string t_upsd;
@@ -92,44 +92,44 @@ int test_wb_server(int argc, char** argv) {
 				std::string t_uid;
 				std::string t_extra;
 
- 				KVQueryUrlArgsValue queryArgs;
- 				int c1 = queryArgs.parse(query.c_str());
- 				if (c1 != 0) {
- 					ws->close(10002);
- 					return;
- 				}
+				KVQueryUrlArgsValue queryArgs;
+				int c1 = queryArgs.parse(query.c_str());
+				if (c1 != 0) {
+					ws->close(10002);
+					return;
+				}
 
- 				t_name = queryArgs.find("name");
- 				t_upsd = queryArgs.find("upsd");
- 				t_rid = queryArgs.find("rid");
- 				t_uid = queryArgs.find("uid");
- 				t_extra = queryArgs.find("extra");
- 				if (t_name.empty()) {
- 					ws->close(10001, "username error.", strlen("username error."));
- 					return;
- 				}
+				t_name = queryArgs.find("name");
+				t_upsd = queryArgs.find("upsd");
+				t_rid = queryArgs.find("rid");
+				t_uid = queryArgs.find("uid");
+				t_extra = queryArgs.find("extra");
+				if (t_name.empty()) {
+					ws->close(10001, "username error.", strlen("username error."));
+					return;
+				}
 
- 				if (t_upsd.empty()) {
- 					ws->close(10001, "password error.", strlen("password error."));
- 					return;
- 				}
+				if (t_upsd.empty()) {
+					ws->close(10001, "password error.", strlen("password error."));
+					return;
+				}
 
- 				if (t_rid.empty()) {
- 					ws->close(10001, "rid error.", strlen("rid error."));
- 					return;
- 				}
+				if (t_rid.empty()) {
+					ws->close(10001, "rid error.", strlen("rid error."));
+					return;
+				}
 
- 				if (t_uid.empty()) {
- 					ws->close(10001, "uid error.", strlen("uid error."));
- 					return;
- 				}
+				if (t_uid.empty()) {
+					ws->close(10001, "uid error.", strlen("uid error."));
+					return;
+				}
 
- 				if (t_extra.empty()) {
- 					ws->close(10001, "extra error.", strlen("extra error."));
- 					return;
- 				}
+				if (t_extra.empty()) {
+					ws->close(10001, "extra error.", strlen("extra error."));
+					return;
+				}
 
- 				LOGFMTD( "name: %s, upsd: %s, rid: %s, uid: %s, extra: %s\n", t_name.c_str(), t_upsd.c_str(),t_rid.c_str(),t_uid.c_str(),t_extra.c_str());
+				LOGFMTD( "name: %s, upsd: %s, rid: %s, uid: %s, extra: %s\n", t_name.c_str(), t_upsd.c_str(),t_rid.c_str(),t_uid.c_str(),t_extra.c_str());
 
 				unsigned int rid = atoi(t_rid.c_str());
 				unsigned int uid = atoi(t_uid.c_str());
@@ -150,8 +150,8 @@ int test_wb_server(int argc, char** argv) {
 				char* buff = new char[len];
 				bool r = connected.SerializeToArray(buff, len);
 				if (r) {
-					TransportData trans(TransportData::TYPE::build);
-					int c = trans.buildData(MESSAGE_CMD_CONNECTED, buff, len);
+					TransportData trans(TransportData::TYPE::encode);
+					int c = trans.build(MESSAGE_CMD_CONNECTED, buff, len);
 					if (c == 0) {
 						ws->send(trans.getBuffer(), trans.getBufferLength(), uWS::OpCode::BINARY);
 					}
@@ -167,20 +167,23 @@ int test_wb_server(int argc, char** argv) {
 	h.onDisconnection(
 			[](uWS::WebSocket<uWS::SERVER> *ws, int code, char * message, size_t length) {
 				UserSession<uWS::SERVER>* session = (UserSession<uWS::SERVER>*)ws->getUserData();
-				LOGFMTD("onDisconnection client [%d]\n", session->uid);
-				delete session;
+				if (session != nullptr) {
+					LOGFMTD("onDisconnection client [%d]", session->uid);
+					delete session;
+				}
 			});
 
 	h.onMessage(
 			[&borker, &h](uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length, uWS::OpCode opCode) {
 				UserSession<uWS::SERVER>* session = (UserSession<uWS::SERVER>*)ws->getUserData();
 				if (opCode == uWS::OpCode::BINARY) {
-					TransportData trans(TransportData::TYPE::parse);
-					int r = trans.parseData(message, length);
+					TransportData trans(TransportData::TYPE::decode);
+					int r = trans.parse(message, length);
 					if (r == 0) {
 						int cmd = trans.getCmd();
 						borker.dispatch(ws, cmd, trans.getBuffer(), trans.getBufferLength(), true);
-					} else {
+					}
+					else {
 						ws_chat_protocol::ws_msg_error merror;
 						merror.set_time(time(NULL));
 						merror.set_msg("protocol is error!");
@@ -188,21 +191,23 @@ int test_wb_server(int argc, char** argv) {
 						char* buff = new char[len];
 						bool r = merror.SerializeToArray(buff, len);
 						if (r) {
-							TransportData trans(TransportData::TYPE::build);
-							int c = trans.buildData(MESSAGE_CMD_ERROR, buff, len);
+							TransportData trans(TransportData::TYPE::encode);
+							int c = trans.build(MESSAGE_CMD_ERROR, buff, len);
 							if (c == 0) {
 								ws->send(trans.getBuffer(), trans.getBufferLength(), opCode);
 							}
 						}
 						delete buff;
 					}
-				} else if (opCode == uWS::OpCode::TEXT) {
+				}
+				else if (opCode == uWS::OpCode::TEXT) {
 
-					LOGFMTD("rid: %d, uid: %d, received:%s\n", session->rid, session->uid, std::string(message, length).c_str());
+					LOGFMTD("rid: %d, uid: %d, received:%s", session->rid, session->uid, std::string(message, length).c_str());
 
 					h.getDefaultGroup<uWS::SERVER>().broadcast(message, length, uWS::OpCode::TEXT);
 
-				} else {
+				}
+				else {
 					std::string msg("error.");
 					ws->send(msg.c_str(), msg.length(), uWS::OpCode::TEXT);
 				}
@@ -212,7 +217,8 @@ int test_wb_server(int argc, char** argv) {
 			[](uWS::HttpResponse *res, uWS::HttpRequest req, char *data, size_t length, size_t remainingBytes) {
 				if (req.getMethod() == uWS::HttpMethod::METHOD_GET) {
 
-				} else if (req.getMethod() == uWS::HttpMethod::METHOD_POST) {
+				}
+				else if (req.getMethod() == uWS::HttpMethod::METHOD_POST) {
 					if (data != NULL) {
 						std::cout << "data: " << data << " length: " << length << std::endl;
 					}
@@ -227,38 +233,40 @@ int test_wb_server(int argc, char** argv) {
 				std::string path;
 				std::string query;
 
- 				URL purl;
- 				int c = parseURL(url.c_str(), &purl);
- 				if (c == 0) {
- 					path = readURLField(url.c_str(), purl.path);
- 					query = readURLField(url.c_str(), purl.query);
- 				}
+				URL purl;
+				int c = parseURL(url.c_str(), &purl);
+				if (c == 0) {
+					path = readURLField(url.c_str(), purl.path);
+					query = readURLField(url.c_str(), purl.query);
+				}
 
- 				if (!path.empty()) {
- 					if (path.compare("/") == 0) {
- 						res->end(__g_index_html.str().data(), __g_index_html.str().length());
- 					}
- 					else if (path.compare("room_user_count") == 0) {
+				if (!path.empty()) {
+					if (path.compare("/") == 0) {
+						res->end(__g_index_html.str().data(), __g_index_html.str().length());
+					}
+					else if (path.compare("room_user_count") == 0) {
 
- 					}
- 					else if (path.compare("mul") == 0) {
+					}
+					else if (path.compare("mul") == 0) {
 
- 					} else {
+					}
+					else {
 
- 					}
- 				}
+					}
+				}
 
 			});
 
 	h.getDefaultGroup<uWS::SERVER>().startAutoPing(10000);
 
 	if (h.listen(3000)) {
-		std::cout << "Success to listen 3000" << std::endl;
+		LOGD("Success to listen 3000");
 
 		h.run();
 
-	} else {
-		std::cout << "Failed to listen 3000" << std::endl;
+	}
+	else {
+		LOGD("Failed to listen 3000");
 	}
 
 	return 0;

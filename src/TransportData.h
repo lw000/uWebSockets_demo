@@ -11,7 +11,7 @@
 class TransportData {
 public:
 	enum TYPE {
-		build = 0, parse = 1
+		encode = 0, decode = 1
 	};
 
 public:
@@ -19,10 +19,10 @@ public:
 	virtual ~TransportData();
 
 public:
-	int buildData(int cmd, char* msg, int length);
+	int build(int cmd, char* msg, int length);
 
 public:
-	int parseData(char* msg, int length);
+	int parse(char* msg, int length);
 
 public:
 	int getCmd() const;

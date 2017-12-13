@@ -28,8 +28,11 @@ protected:
 
 public:
 	BorkerMessage() {
+
 	}
+
 	virtual ~BorkerMessage() {
+
 	}
 
 public:
