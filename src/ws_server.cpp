@@ -1,4 +1,5 @@
 #include "main.h"
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -14,6 +15,8 @@
 #include "rapidjson/reader.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
+
+#include "SessionMgr.h"
 
 #include "log4z.h"
 
@@ -61,6 +64,8 @@ class WSServer {
 		ServerBorkerMessage _borker;
 		std::stringstream _index_html;
 };
+
+static SessionMgr __g_session_mgr;
 
 int test_wb_server(int argc, char** argv) {
 
@@ -171,6 +176,8 @@ int test_wb_server(int argc, char** argv) {
 				session->uid = uid;
 				ws->setUserData(session);
 
+				__g_session_mgr.addSession(session);
+
 #if 0
 			{
 				ws_protocol::msg_connected connected;
@@ -200,6 +207,7 @@ int test_wb_server(int argc, char** argv) {
 				UserSession<uWS::SERVER>* session = (UserSession<uWS::SERVER>*)ws->getUserData();
 				if (session != nullptr) {
 					LOGFMTD("onDisconnection client [%d]", session->uid);
+					__g_session_mgr.removeSession(session);
 					delete session;
 				}
 			});
