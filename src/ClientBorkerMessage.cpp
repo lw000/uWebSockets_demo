@@ -18,17 +18,17 @@
 
 ClientBorkerMessage::ClientBorkerMessage() {
 
-	this->setMessageCallback(
-			CC_MSG_CALLBACK_4(ClientBorkerMessage::onMessage, this));
-
 	this->addEvent(MESSAGE_CMD_CONNECTED,
-			CC_MSG_CALLBACK_3(ClientBorkerMessage::onConnected, this));
+			CC_WS_MSG_CALLBACK_3(ClientBorkerMessage::onConnected, this));
 	this->addEvent(MESSAGE_CMD_CHAT,
-			CC_MSG_CALLBACK_3(ClientBorkerMessage::onChat, this));
+			CC_WS_MSG_CALLBACK_3(ClientBorkerMessage::onChat, this));
 	this->addEvent(MESSAGE_CMD_CHAT_REPLAY,
-			CC_MSG_CALLBACK_3(ClientBorkerMessage::onChatReplay, this));
+			CC_WS_MSG_CALLBACK_3(ClientBorkerMessage::onChatReplay, this));
 	this->addEvent(MESSAGE_CMD_ERROR,
-			CC_MSG_CALLBACK_3(ClientBorkerMessage::onError, this));
+			CC_WS_MSG_CALLBACK_3(ClientBorkerMessage::onError, this));
+
+	this->setMessageCallback(
+			CC_WS_MSG_CALLBACK_4(ClientBorkerMessage::onMessage, this));
 }
 
 ClientBorkerMessage::~ClientBorkerMessage() {
@@ -39,13 +39,17 @@ int ClientBorkerMessage::onMessage(uWS::WebSocket<uWS::CLIENT> *ws, int cmd,
 		char *message, size_t length) {
 	if (cmd == MESSAGE_CMD_CONNECTED) {
 
-	} else if (cmd == MESSAGE_CMD_CHAT) {
+	}
+	else if (cmd == MESSAGE_CMD_CHAT) {
 
-	} else if (cmd == MESSAGE_CMD_CHAT_REPLAY) {
+	}
+	else if (cmd == MESSAGE_CMD_CHAT_REPLAY) {
 
-	} else if (cmd == MESSAGE_CMD_ERROR) {
+	}
+	else if (cmd == MESSAGE_CMD_ERROR) {
 
-	} else {
+	}
+	else {
 		LOGFMTD("cmd: %d\n", cmd);
 	}
 	return 0;
@@ -53,6 +57,14 @@ int ClientBorkerMessage::onMessage(uWS::WebSocket<uWS::CLIENT> *ws, int cmd,
 
 bool ClientBorkerMessage::onConnected(uWS::WebSocket<uWS::CLIENT> *ws,
 		char *message, size_t length) {
+	if (message == nullptr) {
+		return false;
+	}
+
+	if (length == 0) {
+		return false;
+	}
+
 	ws_chat_protocol::ws_msg_connected con;
 	bool r = con.ParseFromArray(message, length);
 	if (r) {
@@ -66,6 +78,14 @@ bool ClientBorkerMessage::onConnected(uWS::WebSocket<uWS::CLIENT> *ws,
 
 bool ClientBorkerMessage::onChat(uWS::WebSocket<uWS::CLIENT> *ws, char *message,
 		size_t length) {
+	if (message == nullptr) {
+		return false;
+	}
+
+	if (length == 0) {
+		return false;
+	}
+
 	ws_chat_protocol::ws_msg_chat_request chat;
 	bool r = chat.ParseFromArray(message, length);
 	if (r) {
@@ -77,6 +97,14 @@ bool ClientBorkerMessage::onChat(uWS::WebSocket<uWS::CLIENT> *ws, char *message,
 
 bool ClientBorkerMessage::onChatReplay(uWS::WebSocket<uWS::CLIENT> *ws,
 		char *message, size_t length) {
+	if (message == nullptr) {
+		return false;
+	}
+
+	if (length == 0) {
+		return false;
+	}
+
 	ws_chat_protocol::ws_msg_chat_replay replay;
 	bool r = replay.ParseFromArray(message, length);
 	if (r) {
@@ -88,6 +116,14 @@ bool ClientBorkerMessage::onChatReplay(uWS::WebSocket<uWS::CLIENT> *ws,
 
 bool ClientBorkerMessage::onError(uWS::WebSocket<uWS::CLIENT> *ws,
 		char *message, size_t length) {
+	if (message == nullptr) {
+		return false;
+	}
+
+	if (length == 0) {
+		return false;
+	}
+
 	ws_chat_protocol::ws_msg_error merror;
 	bool r = merror.ParseFromArray(message, length);
 	if (r) {

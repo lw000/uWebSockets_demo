@@ -13,8 +13,8 @@
 #include <functional>
 #include <unordered_map>
 
-#define CC_MSG_CALLBACK_3(__selector__,__target__, ...) std::bind(&__selector__,__target__, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, ##__VA_ARGS__)
-#define CC_MSG_CALLBACK_4(__selector__,__target__, ...) std::bind(&__selector__,__target__, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, ##__VA_ARGS__)
+#define CC_WS_MSG_CALLBACK_3(__selector__,__target__, ...) std::bind(&__selector__,__target__, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, ##__VA_ARGS__)
+#define CC_WS_MSG_CALLBACK_4(__selector__,__target__, ...) std::bind(&__selector__,__target__, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3, std::placeholders::_4, ##__VA_ARGS__)
 
 template<bool isServer>
 class BorkerMessage {
@@ -24,7 +24,7 @@ class BorkerMessage {
 protected:
 	std::function<
 			int(uWS::WebSocket<isServer> *ws, int cmd, char *message,
-					size_t length)> _msgAllHandler;
+					size_t length)> _onMessageHandler;
 
 public:
 	BorkerMessage() {
@@ -62,7 +62,7 @@ public:
 		}
 
 		if (goon) {
-			this->_msgAllHandler(ws, cmd, message, length);
+			this->_onMessageHandler(ws, cmd, message, length);
 		}
 	}
 
@@ -71,7 +71,7 @@ protected:
 			std::function<
 					int(uWS::WebSocket<isServer> *ws, int cmd, char *message,
 							size_t length)> handler) {
-		this->_msgAllHandler = handler;
+		this->_onMessageHandler = handler;
 	}
 
 private:

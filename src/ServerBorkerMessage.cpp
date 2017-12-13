@@ -19,7 +19,7 @@
 
 ServerBorkerMessage::ServerBorkerMessage() {
 	this->setMessageCallback(
-			CC_MSG_CALLBACK_4(ServerBorkerMessage::onMessage, this));
+			CC_WS_MSG_CALLBACK_4(ServerBorkerMessage::onMessage, this));
 
 //	this->addEvent(MESSAGE_CMD_CONNECTED,
 //			CC_MSG_CALLBACK_3(ServerBorkerMessage::onConnected, this));

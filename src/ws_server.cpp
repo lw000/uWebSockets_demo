@@ -35,6 +35,33 @@ extern "C" {
 
 std::stringstream __g_index_html;
 
+class WSServer {
+	public:
+		WSServer() {
+
+		}
+
+		virtual ~WSServer() {
+
+		}
+
+	public:
+		int init() {
+			this->_index_html << std::ifstream("index.html").rdbuf();
+			if (!this->_index_html.str().length()) {
+				LOGD("Failed to load index.html");
+				return -1;
+			}
+
+			return 0;
+		}
+
+	private:
+		uWS::Hub h;
+		ServerBorkerMessage _borker;
+		std::stringstream _index_html;
+};
+
 int test_wb_server(int argc, char** argv) {
 
 	uWS::Hub h;
@@ -49,13 +76,18 @@ int test_wb_server(int argc, char** argv) {
 	h.onPong(
 			[](uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length) {
 				UserSession<uWS::SERVER>* session = (UserSession<uWS::SERVER>*)ws->getUserData();
-				session->pings++;
-				LOGFMTD("client[%d] pongs[%d]\n", session->uid, session->pings);
+				if (session != nullptr) {
+					session->pings++;
+					LOGFMTD("client[%d] pongs[%d]", session->uid, session->pings);
 
-				//					if (c->pings >= c->pongs) {
-				//						printf("close client[%d] \n", c->uid);
-				//						ws->close();
-				//					}
+					//					if (c->pings >= c->pongs) {
+					//						printf("close client[%d] \n", c->uid);
+					//						ws->close();
+					//					}
+				}
+				else {
+					LOGD("session == nullptr");
+				}
 			});
 
 	h.onConnection(
@@ -134,8 +166,7 @@ int test_wb_server(int argc, char** argv) {
 				unsigned int rid = atoi(t_rid.c_str());
 				unsigned int uid = atoi(t_uid.c_str());
 
-				UserSession<uWS::SERVER>* session = new UserSession<uWS::SERVER>();
-				session->ws =ws;
+				UserSession<uWS::SERVER>* session = new UserSession<uWS::SERVER>(ws);
 				session->rid = rid;
 				session->uid = uid;
 				ws->setUserData(session);
@@ -215,20 +246,20 @@ int test_wb_server(int argc, char** argv) {
 
 	h.onHttpRequest(
 			[](uWS::HttpResponse *res, uWS::HttpRequest req, char *data, size_t length, size_t remainingBytes) {
+				std::string url = req.getUrl().toString();
+				LOGFMTD( "url: %s\n", url.c_str());
+
 				if (req.getMethod() == uWS::HttpMethod::METHOD_GET) {
 
 				}
 				else if (req.getMethod() == uWS::HttpMethod::METHOD_POST) {
 					if (data != NULL) {
-						std::cout << "data: " << data << " length: " << length << std::endl;
+						LOGFMTD("length:%d, data:%s", length, data);
 					}
 					else {
 
 					}
 				}
-
-				std::string url = req.getUrl().toString();
-				LOGFMTD( "url: %s\n", url.c_str());
 
 				std::string path;
 				std::string query;

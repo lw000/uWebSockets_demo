@@ -30,22 +30,24 @@ public:
 	int pongs;
 
 public:
-	UserSession() {
+	UserSession(uWS::WebSocket<isServer> *ws) {
 		this->rid = 0;
 		this->uid = 0;
 		this->pings = 0;
 		this->pongs = 3;
-		this->ws = nullptr;
+		this->ws = ws;
 	}
 
 	virtual ~UserSession(){
 
 	}
 
-//public:
-//	void setWS(uWS::WebSocket<isServer> *ws);
-
 public:
+	void setWS(uWS::WebSocket<isServer> *ws) {
+		this->ws = ws;
+	}
+
+private:
 	uWS::WebSocket<isServer> *ws;
 };
 

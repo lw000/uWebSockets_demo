@@ -127,123 +127,176 @@ void __run_server_text__(void* self) {
 	};
 }
 
+class MsgHandler {
+	public:
+		MsgHandler(uWS::WebSocket<uWS::CLIENT> *ws = nullptr) {
+			this->ws = ws;
+		}
+
+		virtual ~MsgHandler() {
+
+		}
+
+	public:
+		void onMessage(char *message, size_t length, bool is_binary) {
+
+		}
+
+	private:
+		uWS::WebSocket<uWS::CLIENT> *ws;
+};
+
+class WSClient {
+	public:
+		WSClient(std::string host = "localhost", std::string port = "3000") {
+			this->_pings = 0;
+			this->_session = new UserSession<uWS::CLIENT>(nullptr);
+			this->_host = host;
+			this->_port = port;
+		}
+
+		virtual ~WSClient() {
+			delete this->_session;
+		}
+
+	public:
+
+		int init() {
+			this->_h.onPing(
+					[this](uWS::WebSocket<uWS::CLIENT> *ws, char *message, size_t length) {
+						LOGFMTD("PING: %d",_pings++);
+					});
+
+			this->_h.onConnection(
+					[this](uWS::WebSocket<uWS::CLIENT> *ws, uWS::HttpRequest req) {
+						LOGD("onConnection");
+						ws->setUserData(_session);
+						{
+							std::unique_lock<std::mutex> l(shared_m);
+							shared_data.ws = ws;
+							shared_data.connected = 1;
+							shared_cv.notify_all();
+						}
+					});
+
+			this->_h.onMessage(
+					[this](uWS::WebSocket<uWS::CLIENT> *ws, char *message, size_t length, uWS::OpCode opCode) {
+						if (opCode == uWS::OpCode::BINARY) {
+							TransportData trans(TransportData::TYPE::decode);
+							int r = trans.parse(message, length);
+							if (r == 0) {
+								int cmd = trans.getCmd();
+								_borker.dispatch(ws, cmd, trans.getBuffer(), trans.getBufferLength(), true);
+							}
+							else {
+								LOGD("protocol package error.");
+							}
+						}
+						else if (opCode == uWS::OpCode::TEXT) {
+							LOGFMTD("received: %s", std::string(message, length).c_str());
+						}
+						else {
+
+						}
+					});
+
+			this->_h.onDisconnection(
+					[this](uWS::WebSocket<uWS::CLIENT> *ws, int code, char * message, size_t length) {
+						LOGD("onDisconnection");
+						switch (code) {
+							case 10001:
+
+							break;
+							case 10002:
+
+							break;
+							default:
+							break;
+						}
+					});
+
+			this->_h.onError(
+					[this](void* user) {
+						switch ((long) user) {
+							case 1:
+							LOGD("Client emitted error on invalid URI");
+							break;
+							case 2:
+							LOGD("Client emitted error on resolve failure");
+							break;
+							case 3:
+							LOGD("Client emitted error on connection timeout (non-SSL)");
+							break;
+							case 5:
+							LOGD("Client emitted error on connection timeout (SSL)");
+							break;
+							case 6:
+							LOGD("Client emitted error on HTTP response without upgrade (non-SSL)");
+							break;
+							case 7:
+							LOGD("Client emitted error on HTTP response without upgrade (SSL)");
+							break;
+							default:
+							LOGFMTD("FAILURE: %d should not emit error!", user);
+						}
+					});
+
+			char addr[512];
+			unsigned int rid = rand() % 5 + 5;
+			unsigned int uid = rand() % 10000 + 10000;
+			std::string name = std::string("test_") + std::to_string(uid);
+			std::string upsd = std::string("1234567890") + std::to_string(uid);
+			std::string extra = "1234567890";
+
+			sprintf(addr,
+					"ws://%s:%s/ws?name=%s&upsd=%s&rid=%d&uid=%d&extra=%s",
+					this->_host.c_str(), this->_port.c_str(), name.c_str(),
+					upsd.c_str(), rid, uid, extra.c_str());
+
+			this->_session->name = name;
+			this->_session->upsd = upsd;
+			this->_session->extra = extra;
+			this->_session->rid = rid;
+			this->_session->uid = uid;
+
+			this->_h.connect(addr);
+
+			return 0;
+		}
+
+	public:
+		void start() {
+			this->_h.run();
+		}
+
+	private:
+		uWS::Hub _h;
+		MsgHandler _handler;
+		ClientBorkerMessage _borker;
+		UserSession<uWS::CLIENT>* _session;
+		int _pings;
+		std::string _host;
+		std::string _port;
+};
+
 int test_wb_client(int argc, char** argv) {
-	int pings = 0;
-	uWS::Hub h;
-	ClientBorkerMessage borker;
-	UserSession<uWS::CLIENT>* session = new UserSession<uWS::CLIENT>();
-
-	h.onPing(
-			[&pings](uWS::WebSocket<uWS::CLIENT> *ws, char *message, size_t length) {
-				LOGFMTD("PING: %d",pings++);
-			});
-
-	h.onConnection(
-			[session](uWS::WebSocket<uWS::CLIENT> *ws, uWS::HttpRequest req) {
-				std::cout << "onConnection" << std::endl;
-				LOGD("onConnection");
-				ws->setUserData(session);
-				{
-					std::unique_lock<std::mutex> l(shared_m);
-					shared_data.ws = ws;
-					shared_data.connected = 1;
-					shared_cv.notify_all();
-				}
-			});
-
-	h.onMessage(
-			[&borker](uWS::WebSocket<uWS::CLIENT> *ws, char *message, size_t length, uWS::OpCode opCode) {
-				if (opCode == uWS::OpCode::BINARY) {
-					TransportData trans(TransportData::TYPE::decode);
-					int r = trans.parse(message, length);
-					if (r == 0) {
-						int cmd = trans.getCmd();
-						borker.dispatch(ws, cmd, trans.getBuffer(), trans.getBufferLength(), true);
-					}
-					else {
-						LOGD("protocol package error.");
-					}
-				}
-				else if (opCode == uWS::OpCode::TEXT) {
-					LOGFMTD("received: %s", std::string(message, length).c_str());
-				}
-				else {
-
-				}
-			});
-
-	h.onDisconnection(
-			[](uWS::WebSocket<uWS::CLIENT> *ws, int code, char * message, size_t length) {
-				LOGD("onDisconnection");
-				switch (code) {
-					case 10001:
-
-					break;
-					case 10002:
-
-					break;
-					default:
-					break;
-				}
-			});
-
-	h.onError(
-			[](void* user) {
-				switch ((long) user) {
-					case 1:
-					LOGD("Client emitted error on invalid URI");
-					break;
-					case 2:
-					LOGD("Client emitted error on resolve failure");
-					break;
-					case 3:
-					LOGD("Client emitted error on connection timeout (non-SSL)");
-					break;
-					case 5:
-					LOGD("Client emitted error on connection timeout (SSL)");
-					break;
-					case 6:
-					LOGD("Client emitted error on HTTP response without upgrade (non-SSL)");
-					break;
-					case 7:
-					LOGD("Client emitted error on HTTP response without upgrade (SSL)");
-					break;
-					default:
-					LOGD("FAILURE: " << user << " should not emit error!");
-				}
-			});
 
 	srand(time(nullptr));
 
-	char addr[512];
-	std::string host = "localhost";
-	std::string port = "3000";
-	unsigned int rid = rand() % 5 + 5;
-	unsigned int uid = rand() % 10000 + 10000;
-	std::string name = std::string("liwei_") + std::to_string(uid);
-	std::string upsd = std::string("1234567890") + std::to_string(uid);
-	std::string extra = "1234567890";
+	WSClient cli("localhost", "3000");
+	if (cli.init() == 0) {
+//		{
+//			std::thread t(__run_server_binary__, &shared_data);
+//			t.detach();
+//		}
 
-	sprintf(addr, "ws://%s:%s/ws?name=%s&upsd=%s&rid=%d&uid=%d&extra=%s",
-			host.c_str(), port.c_str(), name.c_str(), upsd.c_str(), rid, uid,
-			extra.c_str());
+		{
+			std::thread t(__run_server_text__, &shared_data);
+			t.detach();
+		}
 
-	session->rid = rid;
-	session->uid = uid;
-
-	h.connect(addr);
-
-//	{
-//		std::thread t(__run_server_binary__, &shared_ws);
-//		t.detach();
-//	}
-
-	{
-		std::thread t(__run_server_text__, &shared_data);
-		t.detach();
+		cli.start();
 	}
-
-	h.run();
 
 	return 0;
 }
