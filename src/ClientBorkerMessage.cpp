@@ -68,9 +68,9 @@ bool ClientBorkerMessage::onConnected(uWS::WebSocket<uWS::CLIENT> *ws,
 	ws_chat_protocol::ws_msg_connected con;
 	bool r = con.ParseFromArray(message, length);
 	if (r) {
-		this->uid = con.uid();
+		this->uid = con.head().uid();
 
-		LOGFMTD("time: %ld, uid:%d, msg: %s", con.time(), con.uid(),
+		LOGFMTD("time: %ld, uid:%d, msg: %s", con.head().time(), con.head().uid(),
 				con.msg().c_str());
 	}
 	return false;
@@ -89,8 +89,8 @@ bool ClientBorkerMessage::onChat(uWS::WebSocket<uWS::CLIENT> *ws, char *message,
 	ws_chat_protocol::ws_msg_chat_request chat;
 	bool r = chat.ParseFromArray(message, length);
 	if (r) {
-		LOGFMTD("time: %ld, from: %d, to: %d, msg: %s", chat.time(),
-				chat.from(), chat.to(), chat.msg().c_str());
+		LOGFMTD("time: %ld, from: %d, to: %d, msg: %s", chat.head().time(),
+				chat.head().from(), chat.head().to(), chat.msg().c_str());
 	}
 	return false;
 }

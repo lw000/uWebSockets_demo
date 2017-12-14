@@ -10,14 +10,6 @@
 
 #include "utils.h"
 
-#include "rapidjson/rapidjson.h"
-#include "rapidjson/document.h"
-#include "rapidjson/reader.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/writer.h"
-
-#include "SessionMgr.h"
-
 #include "log4z.h"
 
 #ifdef __cplusplus
@@ -29,12 +21,21 @@ extern "C" {
 }
 #endif
 
+#include "rapidjson/rapidjson.h"
+#include "rapidjson/document.h"
+#include "rapidjson/reader.h"
+#include "rapidjson/stringbuffer.h"
+#include "rapidjson/writer.h"
+
+#include "SessionMgr.h"
+
 #include "ws_chat_protocol.pb.h"
 #include "ws_command.h"
-
 #include "TransportData.h"
 #include "ServerBorkerMessage.h"
 #include "UserSession.h"
+
+using namespace rapidjson;
 
 std::stringstream __g_index_html;
 
@@ -68,7 +69,6 @@ class WSServer {
 static SessionMgr __g_session_mgr;
 
 int test_wb_server(int argc, char** argv) {
-
 	uWS::Hub h;
 	ServerBorkerMessage borker;
 
@@ -166,7 +166,7 @@ int test_wb_server(int argc, char** argv) {
 					return;
 				}
 
-				LOGFMTD( "name: %s, upsd: %s, rid: %s, uid: %s, extra: %s\n", t_name.c_str(), t_upsd.c_str(),t_rid.c_str(),t_uid.c_str(),t_extra.c_str());
+				LOGFMTD( "name: %s, upsd: %s, rid: %s, uid: %s, extra: %s", t_name.c_str(), t_upsd.c_str(),t_rid.c_str(),t_uid.c_str(),t_extra.c_str());
 
 				unsigned int rid = atoi(t_rid.c_str());
 				unsigned int uid = atoi(t_uid.c_str());
@@ -197,14 +197,19 @@ int test_wb_server(int argc, char** argv) {
 				delete buff;
 			}
 #else
-			std::string msg("connected success.");
-			msg += " [rid: ";
-			msg += t_rid;
-			msg += ", uid: ";
-			msg += t_uid;
-			msg += "]";
-
-			ws->send(msg.c_str(), msg.length(), uWS::OpCode::TEXT);
+			{
+				Document d;
+				d.SetObject();
+				Document::AllocatorType& allocator = d.GetAllocator();
+				d.AddMember("rid", session->rid, allocator);
+				d.AddMember("uid", session->uid, allocator);
+				d.AddMember("what", "connected success", allocator);
+				StringBuffer buffer;
+				Writer<StringBuffer> writer(buffer);
+				d.Accept(writer);
+				std::string msg = buffer.GetString();
+				ws->send(msg.c_str(), msg.length(), uWS::OpCode::TEXT);
+			}
 #endif
 		});
 
@@ -276,7 +281,7 @@ int test_wb_server(int argc, char** argv) {
 				}
 				else if (req.getMethod() == uWS::HttpMethod::METHOD_POST) {
 					if (data != NULL) {
-						LOGFMTD("length:%d, data:%s", length, data);
+						LOGFMTD("length:%lld, data:%s", length, data);
 					}
 					else {
 

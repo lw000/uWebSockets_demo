@@ -37,21 +37,21 @@ int ServerBorkerMessage::onMessage(uWS::WebSocket<uWS::SERVER> *ws, int cmd,
 		ws_chat_protocol::ws_msg_connected con;
 		bool r = con.ParseFromArray(message, length);
 		if (r) {
-			LOGFMTD("%ld,%s", con.time(), con.msg().c_str());
+			LOGFMTD("%ld,%s", con.head().time(), con.msg().c_str());
 		}
 	}
 	else if (cmd == MESSAGE_CMD_CHAT) {
 		ws_chat_protocol::ws_msg_chat_request chat;
 		bool r = chat.ParseFromArray(message, length);
 		if (r) {
-			LOGFMTD("time: %ld, from: %d, to: %d, msg: %s", chat.time(),
-					chat.from(), chat.to(), chat.msg().c_str());
+			LOGFMTD("time: %ld, from: %d, to: %d, msg: %s", chat.head().time(),
+					chat.head().from(), chat.head().to(), chat.msg().c_str());
 
 			ws_chat_protocol::ws_msg_chat_replay replay;
 			replay.set_code(100);
 			replay.set_time(time(NULL));
 			replay.set_msg("world");
-			replay.set_from(chat.from());
+			replay.set_from(chat.head().from());
 			int len = replay.ByteSize();
 			char* buff = new char[len];
 			bool r = replay.SerializeToArray(buff, len);

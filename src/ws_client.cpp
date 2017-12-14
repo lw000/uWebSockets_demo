@@ -61,10 +61,10 @@ void __run_server_binary__(void* self) {
 
 	while (1) {
 		ws_chat_protocol::ws_msg_chat_request chat;
-		chat.set_time(time(NULL));
-		chat.set_rid(session->rid);
-		chat.set_from(session->uid);
-		chat.set_to(10000);
+		chat.mutable_head()->set_time(time(NULL));
+		chat.mutable_head()->set_rid(session->rid);
+		chat.mutable_head()->set_from(session->uid);
+		chat.mutable_head()->set_to(10000);
 		chat.set_msg("hello");
 
 		int len = chat.ByteSize();
