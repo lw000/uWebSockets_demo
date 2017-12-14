@@ -27,17 +27,15 @@ extern "C" {
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
 
-#include "SessionMgr.h"
-
 #include "ws_chat_protocol.pb.h"
-#include "ws_command.h"
+
 #include "TransportData.h"
 #include "ServerBorkerMessage.h"
 #include "UserSession.h"
 
 using namespace rapidjson;
 
-std::stringstream __g_index_html;
+static std::stringstream __g_index_html;
 
 class WSServer {
 	public:
@@ -66,13 +64,11 @@ class WSServer {
 		std::stringstream _index_html;
 };
 
-static SessionMgr __g_session_mgr;
-
 int test_wb_server(int argc, char** argv) {
 	uWS::Hub h;
 	ServerBorkerMessage borker;
 
-	__g_index_html << std::ifstream("index.html").rdbuf();
+	__g_index_html << std::ifstream("./index.html").rdbuf();
 	if (!__g_index_html.str().length()) {
 		LOGD("Failed to load index.html");
 		return -1;
@@ -96,7 +92,7 @@ int test_wb_server(int argc, char** argv) {
 			});
 
 	h.onConnection(
-			[](uWS::WebSocket<uWS::SERVER> *ws, uWS::HttpRequest req) {
+			[&borker](uWS::WebSocket<uWS::SERVER> *ws, uWS::HttpRequest req) {
 				std::string url = req.getUrl().toString();
 				LOGFMTD( "url: %s", url.c_str());
 
@@ -176,7 +172,7 @@ int test_wb_server(int argc, char** argv) {
 				session->uid = uid;
 				ws->setUserData(session);
 
-				__g_session_mgr.addSession(session);
+				borker.session_mgr.addSession(session);
 
 #if 0
 			{
@@ -214,11 +210,11 @@ int test_wb_server(int argc, char** argv) {
 		});
 
 	h.onDisconnection(
-			[](uWS::WebSocket<uWS::SERVER> *ws, int code, char * message, size_t length) {
+			[&borker](uWS::WebSocket<uWS::SERVER> *ws, int code, char * message, size_t length) {
 				UserSession<uWS::SERVER>* session = (UserSession<uWS::SERVER>*)ws->getUserData();
 				if (session != nullptr) {
 					LOGFMTD("onDisconnection. [%d]", session->uid);
-					__g_session_mgr.removeSession(session);
+					borker.session_mgr.removeSession(session);
 					delete session;
 				}
 			});
@@ -258,7 +254,7 @@ int test_wb_server(int argc, char** argv) {
 						h.getDefaultGroup<uWS::SERVER>().broadcast(message, length, uWS::OpCode::TEXT);
 					}
 					else {
-						__g_session_mgr.foreach([session, &h, message, length](UserSession<uWS::SERVER>* s) {
+						borker.session_mgr.foreach([session, &h, message, length](UserSession<uWS::SERVER>* s) {
 									if (session->rid == s->rid) {
 										s->getWS()->send(message, length, uWS::OpCode::TEXT);
 									}
@@ -272,7 +268,7 @@ int test_wb_server(int argc, char** argv) {
 			});
 
 	h.onHttpRequest(
-			[](uWS::HttpResponse *res, uWS::HttpRequest req, char *data, size_t length, size_t remainingBytes) {
+			[&borker](uWS::HttpResponse *res, uWS::HttpRequest req, char *data, size_t length, size_t remainingBytes) {
 				std::string url = req.getUrl().toString();
 				LOGFMTD( "url: %s\n", url.c_str());
 

@@ -39,6 +39,13 @@ const ::google::protobuf::internal::GeneratedMessageReflection*
 const ::google::protobuf::Descriptor* ws_msg_chat_replay_descriptor_ = NULL;
 const ::google::protobuf::internal::GeneratedMessageReflection*
   ws_msg_chat_replay_reflection_ = NULL;
+const ::google::protobuf::Descriptor* ws_msg_userinfo_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  ws_msg_userinfo_reflection_ = NULL;
+const ::google::protobuf::Descriptor* ws_msg_room_userinfo_descriptor_ = NULL;
+const ::google::protobuf::internal::GeneratedMessageReflection*
+  ws_msg_room_userinfo_reflection_ = NULL;
+const ::google::protobuf::EnumDescriptor* EnumMsgStatus_descriptor_ = NULL;
 
 }  // namespace
 
@@ -147,6 +154,41 @@ void protobuf_AssignDesc_ws_5fchat_5fprotocol_2eproto() {
       -1,
       sizeof(ws_msg_chat_replay),
       GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ws_msg_chat_replay, _internal_metadata_));
+  ws_msg_userinfo_descriptor_ = file->message_type(6);
+  static const int ws_msg_userinfo_offsets_[7] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ws_msg_userinfo, full_name_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ws_msg_userinfo, age_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ws_msg_userinfo, sex_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ws_msg_userinfo, nick_name_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ws_msg_userinfo, address_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ws_msg_userinfo, uid_),
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ws_msg_userinfo, rid_),
+  };
+  ws_msg_userinfo_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      ws_msg_userinfo_descriptor_,
+      ws_msg_userinfo::internal_default_instance(),
+      ws_msg_userinfo_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(ws_msg_userinfo),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ws_msg_userinfo, _internal_metadata_));
+  ws_msg_room_userinfo_descriptor_ = file->message_type(7);
+  static const int ws_msg_room_userinfo_offsets_[1] = {
+    GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ws_msg_room_userinfo, userinfo_),
+  };
+  ws_msg_room_userinfo_reflection_ =
+    ::google::protobuf::internal::GeneratedMessageReflection::NewGeneratedMessageReflection(
+      ws_msg_room_userinfo_descriptor_,
+      ws_msg_room_userinfo::internal_default_instance(),
+      ws_msg_room_userinfo_offsets_,
+      -1,
+      -1,
+      -1,
+      sizeof(ws_msg_room_userinfo),
+      GOOGLE_PROTOBUF_GENERATED_MESSAGE_FIELD_OFFSET(ws_msg_room_userinfo, _internal_metadata_));
+  EnumMsgStatus_descriptor_ = file->enum_type(0);
 }
 
 namespace {
@@ -172,6 +214,10 @@ void protobuf_RegisterTypes(const ::std::string&) {
       ws_msg_chat_request_descriptor_, ws_msg_chat_request::internal_default_instance());
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
       ws_msg_chat_replay_descriptor_, ws_msg_chat_replay::internal_default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      ws_msg_userinfo_descriptor_, ws_msg_userinfo::internal_default_instance());
+  ::google::protobuf::MessageFactory::InternalRegisterGeneratedMessage(
+      ws_msg_room_userinfo_descriptor_, ws_msg_room_userinfo::internal_default_instance());
 }
 
 }  // namespace
@@ -189,6 +235,10 @@ void protobuf_ShutdownFile_ws_5fchat_5fprotocol_2eproto() {
   delete ws_msg_chat_request_reflection_;
   ws_msg_chat_replay_default_instance_.Shutdown();
   delete ws_msg_chat_replay_reflection_;
+  ws_msg_userinfo_default_instance_.Shutdown();
+  delete ws_msg_userinfo_reflection_;
+  ws_msg_room_userinfo_default_instance_.Shutdown();
+  delete ws_msg_room_userinfo_reflection_;
 }
 
 void protobuf_InitDefaults_ws_5fchat_5fprotocol_2eproto_impl() {
@@ -204,12 +254,17 @@ void protobuf_InitDefaults_ws_5fchat_5fprotocol_2eproto_impl() {
   ws_msg_chat_request_default_instance_.DefaultConstruct();
   ::google::protobuf::internal::GetEmptyString();
   ws_msg_chat_replay_default_instance_.DefaultConstruct();
+  ::google::protobuf::internal::GetEmptyString();
+  ws_msg_userinfo_default_instance_.DefaultConstruct();
+  ws_msg_room_userinfo_default_instance_.DefaultConstruct();
   ws_msg_head_default_instance_.get_mutable()->InitAsDefaultInstance();
   ws_msg_connected_default_instance_.get_mutable()->InitAsDefaultInstance();
   ws_msg_error_default_instance_.get_mutable()->InitAsDefaultInstance();
   ws_msg_chat_head_default_instance_.get_mutable()->InitAsDefaultInstance();
   ws_msg_chat_request_default_instance_.get_mutable()->InitAsDefaultInstance();
   ws_msg_chat_replay_default_instance_.get_mutable()->InitAsDefaultInstance();
+  ws_msg_userinfo_default_instance_.get_mutable()->InitAsDefaultInstance();
+  ws_msg_room_userinfo_default_instance_.get_mutable()->InitAsDefaultInstance();
 }
 
 GOOGLE_PROTOBUF_DECLARE_ONCE(protobuf_InitDefaults_ws_5fchat_5fprotocol_2eproto_once_);
@@ -234,7 +289,13 @@ void protobuf_AddDesc_ws_5fchat_5fprotocol_2eproto_impl() {
     "l.ws_msg_chat_head\022\013\n\003msg\030\002 \001(\t\"W\n\022ws_ms"
     "g_chat_replay\022\014\n\004time\030\001 \001(\003\022\014\n\004from\030\002 \001("
     "\005\022\n\n\002to\030\003 \001(\005\022\014\n\004code\030\004 \001(\005\022\013\n\003msg\030\005 \001(\t"
-    "b\006proto3", 488);
+    "\"|\n\017ws_msg_userinfo\022\021\n\tfull_name\030\001 \001(\t\022\013"
+    "\n\003age\030\002 \001(\005\022\013\n\003sex\030\003 \001(\005\022\021\n\tnick_name\030\004 "
+    "\001(\t\022\017\n\007address\030\005 \001(\t\022\013\n\003uid\030\006 \001(\005\022\013\n\003rid"
+    "\030\007 \001(\005\"K\n\024ws_msg_room_userinfo\0223\n\010userin"
+    "fo\030\001 \003(\0132!.ws_chat_protocol.ws_msg_useri"
+    "nfo*2\n\rEnumMsgStatus\022\013\n\007UNKNOWN\020\000\022\010\n\004REA"
+    "D\020\001\022\n\n\006UNREAD\020\002b\006proto3", 743);
   ::google::protobuf::MessageFactory::InternalRegisterGeneratedFile(
     "ws_chat_protocol.proto", &protobuf_RegisterTypes);
   ::google::protobuf::internal::OnShutdown(&protobuf_ShutdownFile_ws_5fchat_5fprotocol_2eproto);
@@ -251,6 +312,21 @@ struct StaticDescriptorInitializer_ws_5fchat_5fprotocol_2eproto {
     protobuf_AddDesc_ws_5fchat_5fprotocol_2eproto();
   }
 } static_descriptor_initializer_ws_5fchat_5fprotocol_2eproto_;
+const ::google::protobuf::EnumDescriptor* EnumMsgStatus_descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return EnumMsgStatus_descriptor_;
+}
+bool EnumMsgStatus_IsValid(int value) {
+  switch (value) {
+    case 0:
+    case 1:
+    case 2:
+      return true;
+    default:
+      return false;
+  }
+}
+
 
 namespace {
 
@@ -2722,6 +2798,984 @@ void ws_msg_chat_replay::set_allocated_msg(::std::string* msg) {
 
 inline const ws_msg_chat_replay* ws_msg_chat_replay::internal_default_instance() {
   return &ws_msg_chat_replay_default_instance_.get();
+}
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ws_msg_userinfo::kFullNameFieldNumber;
+const int ws_msg_userinfo::kAgeFieldNumber;
+const int ws_msg_userinfo::kSexFieldNumber;
+const int ws_msg_userinfo::kNickNameFieldNumber;
+const int ws_msg_userinfo::kAddressFieldNumber;
+const int ws_msg_userinfo::kUidFieldNumber;
+const int ws_msg_userinfo::kRidFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ws_msg_userinfo::ws_msg_userinfo()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (this != internal_default_instance()) protobuf_InitDefaults_ws_5fchat_5fprotocol_2eproto();
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:ws_chat_protocol.ws_msg_userinfo)
+}
+
+void ws_msg_userinfo::InitAsDefaultInstance() {
+}
+
+ws_msg_userinfo::ws_msg_userinfo(const ws_msg_userinfo& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  UnsafeMergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:ws_chat_protocol.ws_msg_userinfo)
+}
+
+void ws_msg_userinfo::SharedCtor() {
+  full_name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  nick_name_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  address_.UnsafeSetDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  ::memset(&age_, 0, reinterpret_cast<char*>(&rid_) -
+    reinterpret_cast<char*>(&age_) + sizeof(rid_));
+  _cached_size_ = 0;
+}
+
+ws_msg_userinfo::~ws_msg_userinfo() {
+  // @@protoc_insertion_point(destructor:ws_chat_protocol.ws_msg_userinfo)
+  SharedDtor();
+}
+
+void ws_msg_userinfo::SharedDtor() {
+  full_name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  nick_name_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  address_.DestroyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+
+void ws_msg_userinfo::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ws_msg_userinfo::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return ws_msg_userinfo_descriptor_;
+}
+
+const ws_msg_userinfo& ws_msg_userinfo::default_instance() {
+  protobuf_InitDefaults_ws_5fchat_5fprotocol_2eproto();
+  return *internal_default_instance();
+}
+
+::google::protobuf::internal::ExplicitlyConstructed<ws_msg_userinfo> ws_msg_userinfo_default_instance_;
+
+ws_msg_userinfo* ws_msg_userinfo::New(::google::protobuf::Arena* arena) const {
+  ws_msg_userinfo* n = new ws_msg_userinfo;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ws_msg_userinfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:ws_chat_protocol.ws_msg_userinfo)
+#if defined(__clang__)
+#define ZR_HELPER_(f) \
+  _Pragma("clang diagnostic push") \
+  _Pragma("clang diagnostic ignored \"-Winvalid-offsetof\"") \
+  __builtin_offsetof(ws_msg_userinfo, f) \
+  _Pragma("clang diagnostic pop")
+#else
+#define ZR_HELPER_(f) reinterpret_cast<char*>(\
+  &reinterpret_cast<ws_msg_userinfo*>(16)->f)
+#endif
+
+#define ZR_(first, last) do {\
+  ::memset(&(first), 0,\
+           ZR_HELPER_(last) - ZR_HELPER_(first) + sizeof(last));\
+} while (0)
+
+  ZR_(age_, rid_);
+  full_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  nick_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+  address_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+
+#undef ZR_HELPER_
+#undef ZR_
+
+}
+
+bool ws_msg_userinfo::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:ws_chat_protocol.ws_msg_userinfo)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // optional string full_name = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_full_name()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->full_name().data(), this->full_name().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "ws_chat_protocol.ws_msg_userinfo.full_name"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(16)) goto parse_age;
+        break;
+      }
+
+      // optional int32 age = 2;
+      case 2: {
+        if (tag == 16) {
+         parse_age:
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &age_)));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(24)) goto parse_sex;
+        break;
+      }
+
+      // optional int32 sex = 3;
+      case 3: {
+        if (tag == 24) {
+         parse_sex:
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &sex_)));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(34)) goto parse_nick_name;
+        break;
+      }
+
+      // optional string nick_name = 4;
+      case 4: {
+        if (tag == 34) {
+         parse_nick_name:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_nick_name()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->nick_name().data(), this->nick_name().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "ws_chat_protocol.ws_msg_userinfo.nick_name"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(42)) goto parse_address;
+        break;
+      }
+
+      // optional string address = 5;
+      case 5: {
+        if (tag == 42) {
+         parse_address:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadString(
+                input, this->mutable_address()));
+          DO_(::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+            this->address().data(), this->address().length(),
+            ::google::protobuf::internal::WireFormatLite::PARSE,
+            "ws_chat_protocol.ws_msg_userinfo.address"));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(48)) goto parse_uid;
+        break;
+      }
+
+      // optional int32 uid = 6;
+      case 6: {
+        if (tag == 48) {
+         parse_uid:
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &uid_)));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(56)) goto parse_rid;
+        break;
+      }
+
+      // optional int32 rid = 7;
+      case 7: {
+        if (tag == 56) {
+         parse_rid:
+
+          DO_((::google::protobuf::internal::WireFormatLite::ReadPrimitive<
+                   ::google::protobuf::int32, ::google::protobuf::internal::WireFormatLite::TYPE_INT32>(
+                 input, &rid_)));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:ws_chat_protocol.ws_msg_userinfo)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:ws_chat_protocol.ws_msg_userinfo)
+  return false;
+#undef DO_
+}
+
+void ws_msg_userinfo::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:ws_chat_protocol.ws_msg_userinfo)
+  // optional string full_name = 1;
+  if (this->full_name().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->full_name().data(), this->full_name().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "ws_chat_protocol.ws_msg_userinfo.full_name");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      1, this->full_name(), output);
+  }
+
+  // optional int32 age = 2;
+  if (this->age() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(2, this->age(), output);
+  }
+
+  // optional int32 sex = 3;
+  if (this->sex() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(3, this->sex(), output);
+  }
+
+  // optional string nick_name = 4;
+  if (this->nick_name().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->nick_name().data(), this->nick_name().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "ws_chat_protocol.ws_msg_userinfo.nick_name");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      4, this->nick_name(), output);
+  }
+
+  // optional string address = 5;
+  if (this->address().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->address().data(), this->address().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "ws_chat_protocol.ws_msg_userinfo.address");
+    ::google::protobuf::internal::WireFormatLite::WriteStringMaybeAliased(
+      5, this->address(), output);
+  }
+
+  // optional int32 uid = 6;
+  if (this->uid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(6, this->uid(), output);
+  }
+
+  // optional int32 rid = 7;
+  if (this->rid() != 0) {
+    ::google::protobuf::internal::WireFormatLite::WriteInt32(7, this->rid(), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:ws_chat_protocol.ws_msg_userinfo)
+}
+
+::google::protobuf::uint8* ws_msg_userinfo::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:ws_chat_protocol.ws_msg_userinfo)
+  // optional string full_name = 1;
+  if (this->full_name().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->full_name().data(), this->full_name().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "ws_chat_protocol.ws_msg_userinfo.full_name");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        1, this->full_name(), target);
+  }
+
+  // optional int32 age = 2;
+  if (this->age() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(2, this->age(), target);
+  }
+
+  // optional int32 sex = 3;
+  if (this->sex() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(3, this->sex(), target);
+  }
+
+  // optional string nick_name = 4;
+  if (this->nick_name().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->nick_name().data(), this->nick_name().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "ws_chat_protocol.ws_msg_userinfo.nick_name");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        4, this->nick_name(), target);
+  }
+
+  // optional string address = 5;
+  if (this->address().size() > 0) {
+    ::google::protobuf::internal::WireFormatLite::VerifyUtf8String(
+      this->address().data(), this->address().length(),
+      ::google::protobuf::internal::WireFormatLite::SERIALIZE,
+      "ws_chat_protocol.ws_msg_userinfo.address");
+    target =
+      ::google::protobuf::internal::WireFormatLite::WriteStringToArray(
+        5, this->address(), target);
+  }
+
+  // optional int32 uid = 6;
+  if (this->uid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(6, this->uid(), target);
+  }
+
+  // optional int32 rid = 7;
+  if (this->rid() != 0) {
+    target = ::google::protobuf::internal::WireFormatLite::WriteInt32ToArray(7, this->rid(), target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:ws_chat_protocol.ws_msg_userinfo)
+  return target;
+}
+
+size_t ws_msg_userinfo::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:ws_chat_protocol.ws_msg_userinfo)
+  size_t total_size = 0;
+
+  // optional string full_name = 1;
+  if (this->full_name().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->full_name());
+  }
+
+  // optional int32 age = 2;
+  if (this->age() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->age());
+  }
+
+  // optional int32 sex = 3;
+  if (this->sex() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->sex());
+  }
+
+  // optional string nick_name = 4;
+  if (this->nick_name().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->nick_name());
+  }
+
+  // optional string address = 5;
+  if (this->address().size() > 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::StringSize(
+        this->address());
+  }
+
+  // optional int32 uid = 6;
+  if (this->uid() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->uid());
+  }
+
+  // optional int32 rid = 7;
+  if (this->rid() != 0) {
+    total_size += 1 +
+      ::google::protobuf::internal::WireFormatLite::Int32Size(
+        this->rid());
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ws_msg_userinfo::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:ws_chat_protocol.ws_msg_userinfo)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  const ws_msg_userinfo* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const ws_msg_userinfo>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:ws_chat_protocol.ws_msg_userinfo)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:ws_chat_protocol.ws_msg_userinfo)
+    UnsafeMergeFrom(*source);
+  }
+}
+
+void ws_msg_userinfo::MergeFrom(const ws_msg_userinfo& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:ws_chat_protocol.ws_msg_userinfo)
+  if (GOOGLE_PREDICT_TRUE(&from != this)) {
+    UnsafeMergeFrom(from);
+  } else {
+    MergeFromFail(__LINE__);
+  }
+}
+
+void ws_msg_userinfo::UnsafeMergeFrom(const ws_msg_userinfo& from) {
+  GOOGLE_DCHECK(&from != this);
+  if (from.full_name().size() > 0) {
+
+    full_name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.full_name_);
+  }
+  if (from.age() != 0) {
+    set_age(from.age());
+  }
+  if (from.sex() != 0) {
+    set_sex(from.sex());
+  }
+  if (from.nick_name().size() > 0) {
+
+    nick_name_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.nick_name_);
+  }
+  if (from.address().size() > 0) {
+
+    address_.AssignWithDefault(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), from.address_);
+  }
+  if (from.uid() != 0) {
+    set_uid(from.uid());
+  }
+  if (from.rid() != 0) {
+    set_rid(from.rid());
+  }
+}
+
+void ws_msg_userinfo::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:ws_chat_protocol.ws_msg_userinfo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ws_msg_userinfo::CopyFrom(const ws_msg_userinfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ws_chat_protocol.ws_msg_userinfo)
+  if (&from == this) return;
+  Clear();
+  UnsafeMergeFrom(from);
+}
+
+bool ws_msg_userinfo::IsInitialized() const {
+
+  return true;
+}
+
+void ws_msg_userinfo::Swap(ws_msg_userinfo* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ws_msg_userinfo::InternalSwap(ws_msg_userinfo* other) {
+  full_name_.Swap(&other->full_name_);
+  std::swap(age_, other->age_);
+  std::swap(sex_, other->sex_);
+  nick_name_.Swap(&other->nick_name_);
+  address_.Swap(&other->address_);
+  std::swap(uid_, other->uid_);
+  std::swap(rid_, other->rid_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ws_msg_userinfo::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = ws_msg_userinfo_descriptor_;
+  metadata.reflection = ws_msg_userinfo_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// ws_msg_userinfo
+
+// optional string full_name = 1;
+void ws_msg_userinfo::clear_full_name() {
+  full_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& ws_msg_userinfo::full_name() const {
+  // @@protoc_insertion_point(field_get:ws_chat_protocol.ws_msg_userinfo.full_name)
+  return full_name_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void ws_msg_userinfo::set_full_name(const ::std::string& value) {
+  
+  full_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:ws_chat_protocol.ws_msg_userinfo.full_name)
+}
+void ws_msg_userinfo::set_full_name(const char* value) {
+  
+  full_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:ws_chat_protocol.ws_msg_userinfo.full_name)
+}
+void ws_msg_userinfo::set_full_name(const char* value, size_t size) {
+  
+  full_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:ws_chat_protocol.ws_msg_userinfo.full_name)
+}
+::std::string* ws_msg_userinfo::mutable_full_name() {
+  
+  // @@protoc_insertion_point(field_mutable:ws_chat_protocol.ws_msg_userinfo.full_name)
+  return full_name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* ws_msg_userinfo::release_full_name() {
+  // @@protoc_insertion_point(field_release:ws_chat_protocol.ws_msg_userinfo.full_name)
+  
+  return full_name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void ws_msg_userinfo::set_allocated_full_name(::std::string* full_name) {
+  if (full_name != NULL) {
+    
+  } else {
+    
+  }
+  full_name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), full_name);
+  // @@protoc_insertion_point(field_set_allocated:ws_chat_protocol.ws_msg_userinfo.full_name)
+}
+
+// optional int32 age = 2;
+void ws_msg_userinfo::clear_age() {
+  age_ = 0;
+}
+::google::protobuf::int32 ws_msg_userinfo::age() const {
+  // @@protoc_insertion_point(field_get:ws_chat_protocol.ws_msg_userinfo.age)
+  return age_;
+}
+void ws_msg_userinfo::set_age(::google::protobuf::int32 value) {
+  
+  age_ = value;
+  // @@protoc_insertion_point(field_set:ws_chat_protocol.ws_msg_userinfo.age)
+}
+
+// optional int32 sex = 3;
+void ws_msg_userinfo::clear_sex() {
+  sex_ = 0;
+}
+::google::protobuf::int32 ws_msg_userinfo::sex() const {
+  // @@protoc_insertion_point(field_get:ws_chat_protocol.ws_msg_userinfo.sex)
+  return sex_;
+}
+void ws_msg_userinfo::set_sex(::google::protobuf::int32 value) {
+  
+  sex_ = value;
+  // @@protoc_insertion_point(field_set:ws_chat_protocol.ws_msg_userinfo.sex)
+}
+
+// optional string nick_name = 4;
+void ws_msg_userinfo::clear_nick_name() {
+  nick_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& ws_msg_userinfo::nick_name() const {
+  // @@protoc_insertion_point(field_get:ws_chat_protocol.ws_msg_userinfo.nick_name)
+  return nick_name_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void ws_msg_userinfo::set_nick_name(const ::std::string& value) {
+  
+  nick_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:ws_chat_protocol.ws_msg_userinfo.nick_name)
+}
+void ws_msg_userinfo::set_nick_name(const char* value) {
+  
+  nick_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:ws_chat_protocol.ws_msg_userinfo.nick_name)
+}
+void ws_msg_userinfo::set_nick_name(const char* value, size_t size) {
+  
+  nick_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:ws_chat_protocol.ws_msg_userinfo.nick_name)
+}
+::std::string* ws_msg_userinfo::mutable_nick_name() {
+  
+  // @@protoc_insertion_point(field_mutable:ws_chat_protocol.ws_msg_userinfo.nick_name)
+  return nick_name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* ws_msg_userinfo::release_nick_name() {
+  // @@protoc_insertion_point(field_release:ws_chat_protocol.ws_msg_userinfo.nick_name)
+  
+  return nick_name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void ws_msg_userinfo::set_allocated_nick_name(::std::string* nick_name) {
+  if (nick_name != NULL) {
+    
+  } else {
+    
+  }
+  nick_name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), nick_name);
+  // @@protoc_insertion_point(field_set_allocated:ws_chat_protocol.ws_msg_userinfo.nick_name)
+}
+
+// optional string address = 5;
+void ws_msg_userinfo::clear_address() {
+  address_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+const ::std::string& ws_msg_userinfo::address() const {
+  // @@protoc_insertion_point(field_get:ws_chat_protocol.ws_msg_userinfo.address)
+  return address_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void ws_msg_userinfo::set_address(const ::std::string& value) {
+  
+  address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:ws_chat_protocol.ws_msg_userinfo.address)
+}
+void ws_msg_userinfo::set_address(const char* value) {
+  
+  address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:ws_chat_protocol.ws_msg_userinfo.address)
+}
+void ws_msg_userinfo::set_address(const char* value, size_t size) {
+  
+  address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:ws_chat_protocol.ws_msg_userinfo.address)
+}
+::std::string* ws_msg_userinfo::mutable_address() {
+  
+  // @@protoc_insertion_point(field_mutable:ws_chat_protocol.ws_msg_userinfo.address)
+  return address_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+::std::string* ws_msg_userinfo::release_address() {
+  // @@protoc_insertion_point(field_release:ws_chat_protocol.ws_msg_userinfo.address)
+  
+  return address_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+void ws_msg_userinfo::set_allocated_address(::std::string* address) {
+  if (address != NULL) {
+    
+  } else {
+    
+  }
+  address_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), address);
+  // @@protoc_insertion_point(field_set_allocated:ws_chat_protocol.ws_msg_userinfo.address)
+}
+
+// optional int32 uid = 6;
+void ws_msg_userinfo::clear_uid() {
+  uid_ = 0;
+}
+::google::protobuf::int32 ws_msg_userinfo::uid() const {
+  // @@protoc_insertion_point(field_get:ws_chat_protocol.ws_msg_userinfo.uid)
+  return uid_;
+}
+void ws_msg_userinfo::set_uid(::google::protobuf::int32 value) {
+  
+  uid_ = value;
+  // @@protoc_insertion_point(field_set:ws_chat_protocol.ws_msg_userinfo.uid)
+}
+
+// optional int32 rid = 7;
+void ws_msg_userinfo::clear_rid() {
+  rid_ = 0;
+}
+::google::protobuf::int32 ws_msg_userinfo::rid() const {
+  // @@protoc_insertion_point(field_get:ws_chat_protocol.ws_msg_userinfo.rid)
+  return rid_;
+}
+void ws_msg_userinfo::set_rid(::google::protobuf::int32 value) {
+  
+  rid_ = value;
+  // @@protoc_insertion_point(field_set:ws_chat_protocol.ws_msg_userinfo.rid)
+}
+
+inline const ws_msg_userinfo* ws_msg_userinfo::internal_default_instance() {
+  return &ws_msg_userinfo_default_instance_.get();
+}
+#endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
+
+// ===================================================================
+
+#if !defined(_MSC_VER) || _MSC_VER >= 1900
+const int ws_msg_room_userinfo::kUserinfoFieldNumber;
+#endif  // !defined(_MSC_VER) || _MSC_VER >= 1900
+
+ws_msg_room_userinfo::ws_msg_room_userinfo()
+  : ::google::protobuf::Message(), _internal_metadata_(NULL) {
+  if (this != internal_default_instance()) protobuf_InitDefaults_ws_5fchat_5fprotocol_2eproto();
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:ws_chat_protocol.ws_msg_room_userinfo)
+}
+
+void ws_msg_room_userinfo::InitAsDefaultInstance() {
+}
+
+ws_msg_room_userinfo::ws_msg_room_userinfo(const ws_msg_room_userinfo& from)
+  : ::google::protobuf::Message(),
+    _internal_metadata_(NULL) {
+  SharedCtor();
+  UnsafeMergeFrom(from);
+  // @@protoc_insertion_point(copy_constructor:ws_chat_protocol.ws_msg_room_userinfo)
+}
+
+void ws_msg_room_userinfo::SharedCtor() {
+  _cached_size_ = 0;
+}
+
+ws_msg_room_userinfo::~ws_msg_room_userinfo() {
+  // @@protoc_insertion_point(destructor:ws_chat_protocol.ws_msg_room_userinfo)
+  SharedDtor();
+}
+
+void ws_msg_room_userinfo::SharedDtor() {
+}
+
+void ws_msg_room_userinfo::SetCachedSize(int size) const {
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+}
+const ::google::protobuf::Descriptor* ws_msg_room_userinfo::descriptor() {
+  protobuf_AssignDescriptorsOnce();
+  return ws_msg_room_userinfo_descriptor_;
+}
+
+const ws_msg_room_userinfo& ws_msg_room_userinfo::default_instance() {
+  protobuf_InitDefaults_ws_5fchat_5fprotocol_2eproto();
+  return *internal_default_instance();
+}
+
+::google::protobuf::internal::ExplicitlyConstructed<ws_msg_room_userinfo> ws_msg_room_userinfo_default_instance_;
+
+ws_msg_room_userinfo* ws_msg_room_userinfo::New(::google::protobuf::Arena* arena) const {
+  ws_msg_room_userinfo* n = new ws_msg_room_userinfo;
+  if (arena != NULL) {
+    arena->Own(n);
+  }
+  return n;
+}
+
+void ws_msg_room_userinfo::Clear() {
+// @@protoc_insertion_point(message_clear_start:ws_chat_protocol.ws_msg_room_userinfo)
+  userinfo_.Clear();
+}
+
+bool ws_msg_room_userinfo::MergePartialFromCodedStream(
+    ::google::protobuf::io::CodedInputStream* input) {
+#define DO_(EXPRESSION) if (!GOOGLE_PREDICT_TRUE(EXPRESSION)) goto failure
+  ::google::protobuf::uint32 tag;
+  // @@protoc_insertion_point(parse_start:ws_chat_protocol.ws_msg_room_userinfo)
+  for (;;) {
+    ::std::pair< ::google::protobuf::uint32, bool> p = input->ReadTagWithCutoff(127);
+    tag = p.first;
+    if (!p.second) goto handle_unusual;
+    switch (::google::protobuf::internal::WireFormatLite::GetTagFieldNumber(tag)) {
+      // repeated .ws_chat_protocol.ws_msg_userinfo userinfo = 1;
+      case 1: {
+        if (tag == 10) {
+          DO_(input->IncrementRecursionDepth());
+         parse_loop_userinfo:
+          DO_(::google::protobuf::internal::WireFormatLite::ReadMessageNoVirtualNoRecursionDepth(
+                input, add_userinfo()));
+        } else {
+          goto handle_unusual;
+        }
+        if (input->ExpectTag(10)) goto parse_loop_userinfo;
+        input->UnsafeDecrementRecursionDepth();
+        if (input->ExpectAtEnd()) goto success;
+        break;
+      }
+
+      default: {
+      handle_unusual:
+        if (tag == 0 ||
+            ::google::protobuf::internal::WireFormatLite::GetTagWireType(tag) ==
+            ::google::protobuf::internal::WireFormatLite::WIRETYPE_END_GROUP) {
+          goto success;
+        }
+        DO_(::google::protobuf::internal::WireFormatLite::SkipField(input, tag));
+        break;
+      }
+    }
+  }
+success:
+  // @@protoc_insertion_point(parse_success:ws_chat_protocol.ws_msg_room_userinfo)
+  return true;
+failure:
+  // @@protoc_insertion_point(parse_failure:ws_chat_protocol.ws_msg_room_userinfo)
+  return false;
+#undef DO_
+}
+
+void ws_msg_room_userinfo::SerializeWithCachedSizes(
+    ::google::protobuf::io::CodedOutputStream* output) const {
+  // @@protoc_insertion_point(serialize_start:ws_chat_protocol.ws_msg_room_userinfo)
+  // repeated .ws_chat_protocol.ws_msg_userinfo userinfo = 1;
+  for (unsigned int i = 0, n = this->userinfo_size(); i < n; i++) {
+    ::google::protobuf::internal::WireFormatLite::WriteMessageMaybeToArray(
+      1, this->userinfo(i), output);
+  }
+
+  // @@protoc_insertion_point(serialize_end:ws_chat_protocol.ws_msg_room_userinfo)
+}
+
+::google::protobuf::uint8* ws_msg_room_userinfo::InternalSerializeWithCachedSizesToArray(
+    bool deterministic, ::google::protobuf::uint8* target) const {
+  (void)deterministic; // Unused
+  // @@protoc_insertion_point(serialize_to_array_start:ws_chat_protocol.ws_msg_room_userinfo)
+  // repeated .ws_chat_protocol.ws_msg_userinfo userinfo = 1;
+  for (unsigned int i = 0, n = this->userinfo_size(); i < n; i++) {
+    target = ::google::protobuf::internal::WireFormatLite::
+      InternalWriteMessageNoVirtualToArray(
+        1, this->userinfo(i), false, target);
+  }
+
+  // @@protoc_insertion_point(serialize_to_array_end:ws_chat_protocol.ws_msg_room_userinfo)
+  return target;
+}
+
+size_t ws_msg_room_userinfo::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:ws_chat_protocol.ws_msg_room_userinfo)
+  size_t total_size = 0;
+
+  // repeated .ws_chat_protocol.ws_msg_userinfo userinfo = 1;
+  {
+    unsigned int count = this->userinfo_size();
+    total_size += 1UL * count;
+    for (unsigned int i = 0; i < count; i++) {
+      total_size +=
+        ::google::protobuf::internal::WireFormatLite::MessageSizeNoVirtual(
+          this->userinfo(i));
+    }
+  }
+
+  int cached_size = ::google::protobuf::internal::ToCachedSize(total_size);
+  GOOGLE_SAFE_CONCURRENT_WRITES_BEGIN();
+  _cached_size_ = cached_size;
+  GOOGLE_SAFE_CONCURRENT_WRITES_END();
+  return total_size;
+}
+
+void ws_msg_room_userinfo::MergeFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:ws_chat_protocol.ws_msg_room_userinfo)
+  if (GOOGLE_PREDICT_FALSE(&from == this)) MergeFromFail(__LINE__);
+  const ws_msg_room_userinfo* source =
+      ::google::protobuf::internal::DynamicCastToGenerated<const ws_msg_room_userinfo>(
+          &from);
+  if (source == NULL) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:ws_chat_protocol.ws_msg_room_userinfo)
+    ::google::protobuf::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:ws_chat_protocol.ws_msg_room_userinfo)
+    UnsafeMergeFrom(*source);
+  }
+}
+
+void ws_msg_room_userinfo::MergeFrom(const ws_msg_room_userinfo& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:ws_chat_protocol.ws_msg_room_userinfo)
+  if (GOOGLE_PREDICT_TRUE(&from != this)) {
+    UnsafeMergeFrom(from);
+  } else {
+    MergeFromFail(__LINE__);
+  }
+}
+
+void ws_msg_room_userinfo::UnsafeMergeFrom(const ws_msg_room_userinfo& from) {
+  GOOGLE_DCHECK(&from != this);
+  userinfo_.MergeFrom(from.userinfo_);
+}
+
+void ws_msg_room_userinfo::CopyFrom(const ::google::protobuf::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:ws_chat_protocol.ws_msg_room_userinfo)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void ws_msg_room_userinfo::CopyFrom(const ws_msg_room_userinfo& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ws_chat_protocol.ws_msg_room_userinfo)
+  if (&from == this) return;
+  Clear();
+  UnsafeMergeFrom(from);
+}
+
+bool ws_msg_room_userinfo::IsInitialized() const {
+
+  return true;
+}
+
+void ws_msg_room_userinfo::Swap(ws_msg_room_userinfo* other) {
+  if (other == this) return;
+  InternalSwap(other);
+}
+void ws_msg_room_userinfo::InternalSwap(ws_msg_room_userinfo* other) {
+  userinfo_.UnsafeArenaSwap(&other->userinfo_);
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  std::swap(_cached_size_, other->_cached_size_);
+}
+
+::google::protobuf::Metadata ws_msg_room_userinfo::GetMetadata() const {
+  protobuf_AssignDescriptorsOnce();
+  ::google::protobuf::Metadata metadata;
+  metadata.descriptor = ws_msg_room_userinfo_descriptor_;
+  metadata.reflection = ws_msg_room_userinfo_reflection_;
+  return metadata;
+}
+
+#if PROTOBUF_INLINE_NOT_IN_HEADERS
+// ws_msg_room_userinfo
+
+// repeated .ws_chat_protocol.ws_msg_userinfo userinfo = 1;
+int ws_msg_room_userinfo::userinfo_size() const {
+  return userinfo_.size();
+}
+void ws_msg_room_userinfo::clear_userinfo() {
+  userinfo_.Clear();
+}
+const ::ws_chat_protocol::ws_msg_userinfo& ws_msg_room_userinfo::userinfo(int index) const {
+  // @@protoc_insertion_point(field_get:ws_chat_protocol.ws_msg_room_userinfo.userinfo)
+  return userinfo_.Get(index);
+}
+::ws_chat_protocol::ws_msg_userinfo* ws_msg_room_userinfo::mutable_userinfo(int index) {
+  // @@protoc_insertion_point(field_mutable:ws_chat_protocol.ws_msg_room_userinfo.userinfo)
+  return userinfo_.Mutable(index);
+}
+::ws_chat_protocol::ws_msg_userinfo* ws_msg_room_userinfo::add_userinfo() {
+  // @@protoc_insertion_point(field_add:ws_chat_protocol.ws_msg_room_userinfo.userinfo)
+  return userinfo_.Add();
+}
+::google::protobuf::RepeatedPtrField< ::ws_chat_protocol::ws_msg_userinfo >*
+ws_msg_room_userinfo::mutable_userinfo() {
+  // @@protoc_insertion_point(field_mutable_list:ws_chat_protocol.ws_msg_room_userinfo.userinfo)
+  return &userinfo_;
+}
+const ::google::protobuf::RepeatedPtrField< ::ws_chat_protocol::ws_msg_userinfo >&
+ws_msg_room_userinfo::userinfo() const {
+  // @@protoc_insertion_point(field_list:ws_chat_protocol.ws_msg_room_userinfo.userinfo)
+  return userinfo_;
+}
+
+inline const ws_msg_room_userinfo* ws_msg_room_userinfo::internal_default_instance() {
+  return &ws_msg_room_userinfo_default_instance_.get();
 }
 #endif  // PROTOBUF_INLINE_NOT_IN_HEADERS
 

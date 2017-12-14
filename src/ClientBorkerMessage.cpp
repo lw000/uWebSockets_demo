@@ -17,6 +17,8 @@
 #include "log4z.h"
 
 ClientBorkerMessage::ClientBorkerMessage() {
+	this->setOnMessageCallback(
+			CC_WS_MSG_CALLBACK_4(ClientBorkerMessage::onMessage, this));
 
 	this->addEvent(MESSAGE_CMD_CONNECTED,
 			CC_WS_MSG_CALLBACK_3(ClientBorkerMessage::onConnected, this));
@@ -26,13 +28,13 @@ ClientBorkerMessage::ClientBorkerMessage() {
 			CC_WS_MSG_CALLBACK_3(ClientBorkerMessage::onChatReplay, this));
 	this->addEvent(MESSAGE_CMD_ERROR,
 			CC_WS_MSG_CALLBACK_3(ClientBorkerMessage::onError, this));
-
-	this->setMessageCallback(
-			CC_WS_MSG_CALLBACK_4(ClientBorkerMessage::onMessage, this));
 }
 
 ClientBorkerMessage::~ClientBorkerMessage() {
-
+	this->removeEvent(MESSAGE_CMD_CONNECTED);
+	this->removeEvent(MESSAGE_CMD_CHAT);
+	this->removeEvent(MESSAGE_CMD_CHAT_REPLAY);
+	this->removeEvent(MESSAGE_CMD_ERROR);
 }
 
 int ClientBorkerMessage::onMessage(uWS::WebSocket<uWS::CLIENT> *ws, int cmd,
@@ -70,8 +72,8 @@ bool ClientBorkerMessage::onConnected(uWS::WebSocket<uWS::CLIENT> *ws,
 	if (r) {
 		this->uid = con.head().uid();
 
-		LOGFMTD("time: %ld, uid:%d, msg: %s", con.head().time(), con.head().uid(),
-				con.msg().c_str());
+		LOGFMTD("time: %ld, uid:%d, msg: %s", con.head().time(),
+				con.head().uid(), con.msg().c_str());
 	}
 	return false;
 }

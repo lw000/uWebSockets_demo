@@ -26,6 +26,7 @@
 #include <google/protobuf/message.h>
 #include <google/protobuf/repeated_field.h>
 #include <google/protobuf/extension_set.h>
+#include <google/protobuf/generated_enum_reflection.h>
 #include <google/protobuf/unknown_field_set.h>
 // @@protoc_insertion_point(includes)
 
@@ -43,7 +44,31 @@ class ws_msg_chat_request;
 class ws_msg_connected;
 class ws_msg_error;
 class ws_msg_head;
+class ws_msg_room_userinfo;
+class ws_msg_userinfo;
 
+enum EnumMsgStatus {
+  UNKNOWN = 0,
+  READ = 1,
+  UNREAD = 2,
+  EnumMsgStatus_INT_MIN_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32min,
+  EnumMsgStatus_INT_MAX_SENTINEL_DO_NOT_USE_ = ::google::protobuf::kint32max
+};
+bool EnumMsgStatus_IsValid(int value);
+const EnumMsgStatus EnumMsgStatus_MIN = UNKNOWN;
+const EnumMsgStatus EnumMsgStatus_MAX = UNREAD;
+const int EnumMsgStatus_ARRAYSIZE = EnumMsgStatus_MAX + 1;
+
+const ::google::protobuf::EnumDescriptor* EnumMsgStatus_descriptor();
+inline const ::std::string& EnumMsgStatus_Name(EnumMsgStatus value) {
+  return ::google::protobuf::internal::NameOfEnum(
+    EnumMsgStatus_descriptor(), value);
+}
+inline bool EnumMsgStatus_Parse(
+    const ::std::string& name, EnumMsgStatus* value) {
+  return ::google::protobuf::internal::ParseNamedEnum<EnumMsgStatus>(
+    EnumMsgStatus_descriptor(), name, value);
+}
 // ===================================================================
 
 class ws_msg_head : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ws_chat_protocol.ws_msg_head) */ {
@@ -677,6 +702,241 @@ class ws_msg_chat_replay : public ::google::protobuf::Message /* @@protoc_insert
 };
 extern ::google::protobuf::internal::ExplicitlyConstructed<ws_msg_chat_replay> ws_msg_chat_replay_default_instance_;
 
+// -------------------------------------------------------------------
+
+class ws_msg_userinfo : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ws_chat_protocol.ws_msg_userinfo) */ {
+ public:
+  ws_msg_userinfo();
+  virtual ~ws_msg_userinfo();
+
+  ws_msg_userinfo(const ws_msg_userinfo& from);
+
+  inline ws_msg_userinfo& operator=(const ws_msg_userinfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ws_msg_userinfo& default_instance();
+
+  static const ws_msg_userinfo* internal_default_instance();
+
+  void Swap(ws_msg_userinfo* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ws_msg_userinfo* New() const { return New(NULL); }
+
+  ws_msg_userinfo* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ws_msg_userinfo& from);
+  void MergeFrom(const ws_msg_userinfo& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  size_t ByteSizeLong() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(ws_msg_userinfo* other);
+  void UnsafeMergeFrom(const ws_msg_userinfo& from);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // optional string full_name = 1;
+  void clear_full_name();
+  static const int kFullNameFieldNumber = 1;
+  const ::std::string& full_name() const;
+  void set_full_name(const ::std::string& value);
+  void set_full_name(const char* value);
+  void set_full_name(const char* value, size_t size);
+  ::std::string* mutable_full_name();
+  ::std::string* release_full_name();
+  void set_allocated_full_name(::std::string* full_name);
+
+  // optional int32 age = 2;
+  void clear_age();
+  static const int kAgeFieldNumber = 2;
+  ::google::protobuf::int32 age() const;
+  void set_age(::google::protobuf::int32 value);
+
+  // optional int32 sex = 3;
+  void clear_sex();
+  static const int kSexFieldNumber = 3;
+  ::google::protobuf::int32 sex() const;
+  void set_sex(::google::protobuf::int32 value);
+
+  // optional string nick_name = 4;
+  void clear_nick_name();
+  static const int kNickNameFieldNumber = 4;
+  const ::std::string& nick_name() const;
+  void set_nick_name(const ::std::string& value);
+  void set_nick_name(const char* value);
+  void set_nick_name(const char* value, size_t size);
+  ::std::string* mutable_nick_name();
+  ::std::string* release_nick_name();
+  void set_allocated_nick_name(::std::string* nick_name);
+
+  // optional string address = 5;
+  void clear_address();
+  static const int kAddressFieldNumber = 5;
+  const ::std::string& address() const;
+  void set_address(const ::std::string& value);
+  void set_address(const char* value);
+  void set_address(const char* value, size_t size);
+  ::std::string* mutable_address();
+  ::std::string* release_address();
+  void set_allocated_address(::std::string* address);
+
+  // optional int32 uid = 6;
+  void clear_uid();
+  static const int kUidFieldNumber = 6;
+  ::google::protobuf::int32 uid() const;
+  void set_uid(::google::protobuf::int32 value);
+
+  // optional int32 rid = 7;
+  void clear_rid();
+  static const int kRidFieldNumber = 7;
+  ::google::protobuf::int32 rid() const;
+  void set_rid(::google::protobuf::int32 value);
+
+  // @@protoc_insertion_point(class_scope:ws_chat_protocol.ws_msg_userinfo)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::internal::ArenaStringPtr full_name_;
+  ::google::protobuf::internal::ArenaStringPtr nick_name_;
+  ::google::protobuf::internal::ArenaStringPtr address_;
+  ::google::protobuf::int32 age_;
+  ::google::protobuf::int32 sex_;
+  ::google::protobuf::int32 uid_;
+  ::google::protobuf::int32 rid_;
+  mutable int _cached_size_;
+  friend void  protobuf_InitDefaults_ws_5fchat_5fprotocol_2eproto_impl();
+  friend void  protobuf_AddDesc_ws_5fchat_5fprotocol_2eproto_impl();
+  friend void protobuf_AssignDesc_ws_5fchat_5fprotocol_2eproto();
+  friend void protobuf_ShutdownFile_ws_5fchat_5fprotocol_2eproto();
+
+  void InitAsDefaultInstance();
+};
+extern ::google::protobuf::internal::ExplicitlyConstructed<ws_msg_userinfo> ws_msg_userinfo_default_instance_;
+
+// -------------------------------------------------------------------
+
+class ws_msg_room_userinfo : public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:ws_chat_protocol.ws_msg_room_userinfo) */ {
+ public:
+  ws_msg_room_userinfo();
+  virtual ~ws_msg_room_userinfo();
+
+  ws_msg_room_userinfo(const ws_msg_room_userinfo& from);
+
+  inline ws_msg_room_userinfo& operator=(const ws_msg_room_userinfo& from) {
+    CopyFrom(from);
+    return *this;
+  }
+
+  static const ::google::protobuf::Descriptor* descriptor();
+  static const ws_msg_room_userinfo& default_instance();
+
+  static const ws_msg_room_userinfo* internal_default_instance();
+
+  void Swap(ws_msg_room_userinfo* other);
+
+  // implements Message ----------------------------------------------
+
+  inline ws_msg_room_userinfo* New() const { return New(NULL); }
+
+  ws_msg_room_userinfo* New(::google::protobuf::Arena* arena) const;
+  void CopyFrom(const ::google::protobuf::Message& from);
+  void MergeFrom(const ::google::protobuf::Message& from);
+  void CopyFrom(const ws_msg_room_userinfo& from);
+  void MergeFrom(const ws_msg_room_userinfo& from);
+  void Clear();
+  bool IsInitialized() const;
+
+  size_t ByteSizeLong() const;
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input);
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      bool deterministic, ::google::protobuf::uint8* output) const;
+  ::google::protobuf::uint8* SerializeWithCachedSizesToArray(::google::protobuf::uint8* output) const {
+    return InternalSerializeWithCachedSizesToArray(false, output);
+  }
+  int GetCachedSize() const { return _cached_size_; }
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const;
+  void InternalSwap(ws_msg_room_userinfo* other);
+  void UnsafeMergeFrom(const ws_msg_room_userinfo& from);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return _internal_metadata_.arena();
+  }
+  inline void* MaybeArenaPtr() const {
+    return _internal_metadata_.raw_arena_ptr();
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // repeated .ws_chat_protocol.ws_msg_userinfo userinfo = 1;
+  int userinfo_size() const;
+  void clear_userinfo();
+  static const int kUserinfoFieldNumber = 1;
+  const ::ws_chat_protocol::ws_msg_userinfo& userinfo(int index) const;
+  ::ws_chat_protocol::ws_msg_userinfo* mutable_userinfo(int index);
+  ::ws_chat_protocol::ws_msg_userinfo* add_userinfo();
+  ::google::protobuf::RepeatedPtrField< ::ws_chat_protocol::ws_msg_userinfo >*
+      mutable_userinfo();
+  const ::google::protobuf::RepeatedPtrField< ::ws_chat_protocol::ws_msg_userinfo >&
+      userinfo() const;
+
+  // @@protoc_insertion_point(class_scope:ws_chat_protocol.ws_msg_room_userinfo)
+ private:
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::RepeatedPtrField< ::ws_chat_protocol::ws_msg_userinfo > userinfo_;
+  mutable int _cached_size_;
+  friend void  protobuf_InitDefaults_ws_5fchat_5fprotocol_2eproto_impl();
+  friend void  protobuf_AddDesc_ws_5fchat_5fprotocol_2eproto_impl();
+  friend void protobuf_AssignDesc_ws_5fchat_5fprotocol_2eproto();
+  friend void protobuf_ShutdownFile_ws_5fchat_5fprotocol_2eproto();
+
+  void InitAsDefaultInstance();
+};
+extern ::google::protobuf::internal::ExplicitlyConstructed<ws_msg_room_userinfo> ws_msg_room_userinfo_default_instance_;
+
 // ===================================================================
 
 
@@ -1159,7 +1419,243 @@ inline void ws_msg_chat_replay::set_allocated_msg(::std::string* msg) {
 inline const ws_msg_chat_replay* ws_msg_chat_replay::internal_default_instance() {
   return &ws_msg_chat_replay_default_instance_.get();
 }
+// -------------------------------------------------------------------
+
+// ws_msg_userinfo
+
+// optional string full_name = 1;
+inline void ws_msg_userinfo::clear_full_name() {
+  full_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ws_msg_userinfo::full_name() const {
+  // @@protoc_insertion_point(field_get:ws_chat_protocol.ws_msg_userinfo.full_name)
+  return full_name_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ws_msg_userinfo::set_full_name(const ::std::string& value) {
+  
+  full_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:ws_chat_protocol.ws_msg_userinfo.full_name)
+}
+inline void ws_msg_userinfo::set_full_name(const char* value) {
+  
+  full_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:ws_chat_protocol.ws_msg_userinfo.full_name)
+}
+inline void ws_msg_userinfo::set_full_name(const char* value, size_t size) {
+  
+  full_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:ws_chat_protocol.ws_msg_userinfo.full_name)
+}
+inline ::std::string* ws_msg_userinfo::mutable_full_name() {
+  
+  // @@protoc_insertion_point(field_mutable:ws_chat_protocol.ws_msg_userinfo.full_name)
+  return full_name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ws_msg_userinfo::release_full_name() {
+  // @@protoc_insertion_point(field_release:ws_chat_protocol.ws_msg_userinfo.full_name)
+  
+  return full_name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ws_msg_userinfo::set_allocated_full_name(::std::string* full_name) {
+  if (full_name != NULL) {
+    
+  } else {
+    
+  }
+  full_name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), full_name);
+  // @@protoc_insertion_point(field_set_allocated:ws_chat_protocol.ws_msg_userinfo.full_name)
+}
+
+// optional int32 age = 2;
+inline void ws_msg_userinfo::clear_age() {
+  age_ = 0;
+}
+inline ::google::protobuf::int32 ws_msg_userinfo::age() const {
+  // @@protoc_insertion_point(field_get:ws_chat_protocol.ws_msg_userinfo.age)
+  return age_;
+}
+inline void ws_msg_userinfo::set_age(::google::protobuf::int32 value) {
+  
+  age_ = value;
+  // @@protoc_insertion_point(field_set:ws_chat_protocol.ws_msg_userinfo.age)
+}
+
+// optional int32 sex = 3;
+inline void ws_msg_userinfo::clear_sex() {
+  sex_ = 0;
+}
+inline ::google::protobuf::int32 ws_msg_userinfo::sex() const {
+  // @@protoc_insertion_point(field_get:ws_chat_protocol.ws_msg_userinfo.sex)
+  return sex_;
+}
+inline void ws_msg_userinfo::set_sex(::google::protobuf::int32 value) {
+  
+  sex_ = value;
+  // @@protoc_insertion_point(field_set:ws_chat_protocol.ws_msg_userinfo.sex)
+}
+
+// optional string nick_name = 4;
+inline void ws_msg_userinfo::clear_nick_name() {
+  nick_name_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ws_msg_userinfo::nick_name() const {
+  // @@protoc_insertion_point(field_get:ws_chat_protocol.ws_msg_userinfo.nick_name)
+  return nick_name_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ws_msg_userinfo::set_nick_name(const ::std::string& value) {
+  
+  nick_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:ws_chat_protocol.ws_msg_userinfo.nick_name)
+}
+inline void ws_msg_userinfo::set_nick_name(const char* value) {
+  
+  nick_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:ws_chat_protocol.ws_msg_userinfo.nick_name)
+}
+inline void ws_msg_userinfo::set_nick_name(const char* value, size_t size) {
+  
+  nick_name_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:ws_chat_protocol.ws_msg_userinfo.nick_name)
+}
+inline ::std::string* ws_msg_userinfo::mutable_nick_name() {
+  
+  // @@protoc_insertion_point(field_mutable:ws_chat_protocol.ws_msg_userinfo.nick_name)
+  return nick_name_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ws_msg_userinfo::release_nick_name() {
+  // @@protoc_insertion_point(field_release:ws_chat_protocol.ws_msg_userinfo.nick_name)
+  
+  return nick_name_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ws_msg_userinfo::set_allocated_nick_name(::std::string* nick_name) {
+  if (nick_name != NULL) {
+    
+  } else {
+    
+  }
+  nick_name_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), nick_name);
+  // @@protoc_insertion_point(field_set_allocated:ws_chat_protocol.ws_msg_userinfo.nick_name)
+}
+
+// optional string address = 5;
+inline void ws_msg_userinfo::clear_address() {
+  address_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline const ::std::string& ws_msg_userinfo::address() const {
+  // @@protoc_insertion_point(field_get:ws_chat_protocol.ws_msg_userinfo.address)
+  return address_.GetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ws_msg_userinfo::set_address(const ::std::string& value) {
+  
+  address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
+  // @@protoc_insertion_point(field_set:ws_chat_protocol.ws_msg_userinfo.address)
+}
+inline void ws_msg_userinfo::set_address(const char* value) {
+  
+  address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:ws_chat_protocol.ws_msg_userinfo.address)
+}
+inline void ws_msg_userinfo::set_address(const char* value, size_t size) {
+  
+  address_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:ws_chat_protocol.ws_msg_userinfo.address)
+}
+inline ::std::string* ws_msg_userinfo::mutable_address() {
+  
+  // @@protoc_insertion_point(field_mutable:ws_chat_protocol.ws_msg_userinfo.address)
+  return address_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline ::std::string* ws_msg_userinfo::release_address() {
+  // @@protoc_insertion_point(field_release:ws_chat_protocol.ws_msg_userinfo.address)
+  
+  return address_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
+}
+inline void ws_msg_userinfo::set_allocated_address(::std::string* address) {
+  if (address != NULL) {
+    
+  } else {
+    
+  }
+  address_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), address);
+  // @@protoc_insertion_point(field_set_allocated:ws_chat_protocol.ws_msg_userinfo.address)
+}
+
+// optional int32 uid = 6;
+inline void ws_msg_userinfo::clear_uid() {
+  uid_ = 0;
+}
+inline ::google::protobuf::int32 ws_msg_userinfo::uid() const {
+  // @@protoc_insertion_point(field_get:ws_chat_protocol.ws_msg_userinfo.uid)
+  return uid_;
+}
+inline void ws_msg_userinfo::set_uid(::google::protobuf::int32 value) {
+  
+  uid_ = value;
+  // @@protoc_insertion_point(field_set:ws_chat_protocol.ws_msg_userinfo.uid)
+}
+
+// optional int32 rid = 7;
+inline void ws_msg_userinfo::clear_rid() {
+  rid_ = 0;
+}
+inline ::google::protobuf::int32 ws_msg_userinfo::rid() const {
+  // @@protoc_insertion_point(field_get:ws_chat_protocol.ws_msg_userinfo.rid)
+  return rid_;
+}
+inline void ws_msg_userinfo::set_rid(::google::protobuf::int32 value) {
+  
+  rid_ = value;
+  // @@protoc_insertion_point(field_set:ws_chat_protocol.ws_msg_userinfo.rid)
+}
+
+inline const ws_msg_userinfo* ws_msg_userinfo::internal_default_instance() {
+  return &ws_msg_userinfo_default_instance_.get();
+}
+// -------------------------------------------------------------------
+
+// ws_msg_room_userinfo
+
+// repeated .ws_chat_protocol.ws_msg_userinfo userinfo = 1;
+inline int ws_msg_room_userinfo::userinfo_size() const {
+  return userinfo_.size();
+}
+inline void ws_msg_room_userinfo::clear_userinfo() {
+  userinfo_.Clear();
+}
+inline const ::ws_chat_protocol::ws_msg_userinfo& ws_msg_room_userinfo::userinfo(int index) const {
+  // @@protoc_insertion_point(field_get:ws_chat_protocol.ws_msg_room_userinfo.userinfo)
+  return userinfo_.Get(index);
+}
+inline ::ws_chat_protocol::ws_msg_userinfo* ws_msg_room_userinfo::mutable_userinfo(int index) {
+  // @@protoc_insertion_point(field_mutable:ws_chat_protocol.ws_msg_room_userinfo.userinfo)
+  return userinfo_.Mutable(index);
+}
+inline ::ws_chat_protocol::ws_msg_userinfo* ws_msg_room_userinfo::add_userinfo() {
+  // @@protoc_insertion_point(field_add:ws_chat_protocol.ws_msg_room_userinfo.userinfo)
+  return userinfo_.Add();
+}
+inline ::google::protobuf::RepeatedPtrField< ::ws_chat_protocol::ws_msg_userinfo >*
+ws_msg_room_userinfo::mutable_userinfo() {
+  // @@protoc_insertion_point(field_mutable_list:ws_chat_protocol.ws_msg_room_userinfo.userinfo)
+  return &userinfo_;
+}
+inline const ::google::protobuf::RepeatedPtrField< ::ws_chat_protocol::ws_msg_userinfo >&
+ws_msg_room_userinfo::userinfo() const {
+  // @@protoc_insertion_point(field_list:ws_chat_protocol.ws_msg_room_userinfo.userinfo)
+  return userinfo_;
+}
+
+inline const ws_msg_room_userinfo* ws_msg_room_userinfo::internal_default_instance() {
+  return &ws_msg_room_userinfo_default_instance_.get();
+}
 #endif  // !PROTOBUF_INLINE_NOT_IN_HEADERS
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------
@@ -1174,6 +1670,20 @@ inline const ws_msg_chat_replay* ws_msg_chat_replay::internal_default_instance()
 // @@protoc_insertion_point(namespace_scope)
 
 }  // namespace ws_chat_protocol
+
+#ifndef SWIG
+namespace google {
+namespace protobuf {
+
+template <> struct is_proto_enum< ::ws_chat_protocol::EnumMsgStatus> : ::google::protobuf::internal::true_type {};
+template <>
+inline const EnumDescriptor* GetEnumDescriptor< ::ws_chat_protocol::EnumMsgStatus>() {
+  return ::ws_chat_protocol::EnumMsgStatus_descriptor();
+}
+
+}  // namespace protobuf
+}  // namespace google
+#endif  // SWIG
 
 // @@protoc_insertion_point(global_scope)
 

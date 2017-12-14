@@ -18,64 +18,80 @@
 
 template<bool isServer>
 class BorkerMessage {
-	typedef typename std::function<
-			bool(uWS::WebSocket<isServer> *ws, char *message, size_t length)> msgHandler;
+		typedef typename std::function<
+				bool(uWS::WebSocket<isServer> *ws, char *message, size_t length)> msgHandler;
 
-protected:
-	std::function<
-			int(uWS::WebSocket<isServer> *ws, int cmd, char *message,
-					size_t length)> _onMessageHandler;
+	protected:
+		std::function<
+				int(uWS::WebSocket<isServer> *ws, int cmd, char *message,
+						size_t length)> _onMessageHandler;
 
-public:
-	BorkerMessage() {
+	public:
+		BorkerMessage() {
 
-	}
-
-	virtual ~BorkerMessage() {
-
-	}
-
-public:
-	void addEvent(int cmd,
-			std::function<
-					int(uWS::WebSocket<isServer> *ws, char *message,
-							size_t length)> handler) {
-		typename std::unordered_map<int, msgHandler>::iterator iter =
-				this->_handler.find(cmd);
-		if (iter == _handler.end()) {
-			this->_handler.insert(std::pair<int, msgHandler>(cmd, handler));
-		} else {
-			iter->second = handler;
-		}
-	}
-
-	void dispatch(uWS::WebSocket<isServer> *ws, int cmd, char *message,
-			size_t length, bool isBinary) {
-		msgHandler cb = nullptr;
-		if (!_handler.empty()) {
-			cb = this->_handler.at(cmd);
 		}
 
-		bool goon = true;
-		if (cb != nullptr) {
-			goon = cb(ws, message, length);
+		virtual ~BorkerMessage() {
+
 		}
 
-		if (goon) {
-			this->_onMessageHandler(ws, cmd, message, length);
+	public:
+		void addEvent(int cmd,
+				std::function<
+						int(uWS::WebSocket<isServer> *ws, char *message,
+								size_t length)> handler) {
+			if (_handler.empty()) {
+				this->_handler.insert(std::pair<int, msgHandler>(cmd, handler));
+			}
+			else {
+				typename std::unordered_map<int, msgHandler>::iterator iter =
+						this->_handler.find(cmd);
+				if (iter == _handler.end()) {
+					this->_handler.insert(
+							std::pair<int, msgHandler>(cmd, handler));
+				}
+			}
 		}
-	}
 
-protected:
-	void setMessageCallback(
-			std::function<
-					int(uWS::WebSocket<isServer> *ws, int cmd, char *message,
-							size_t length)> handler) {
-		this->_onMessageHandler = handler;
-	}
+		void removeEvent(int cmd) {
+			if (_handler.empty()) {
+				return;
+			}
 
-private:
-	std::unordered_map<int, msgHandler> _handler;
+			typename std::unordered_map<int, msgHandler>::iterator iter =
+					this->_handler.find(cmd);
+			if (iter == _handler.end()) {
+				this->_handler.erase(iter);
+			}
+		}
+
+		void dispatch(uWS::WebSocket<isServer> *ws, int cmd, char *message,
+				size_t length, bool isBinary) {
+			msgHandler cb = nullptr;
+			if (!_handler.empty()) {
+				cb = this->_handler.at(cmd);
+			}
+
+			bool goon = true;
+			if (cb != nullptr) {
+				goon = cb(ws, message, length);
+			}
+
+			if (goon) {
+				this->_onMessageHandler(ws, cmd, message, length);
+			}
+		}
+
+	protected:
+		void setOnMessageCallback(
+				std::function<
+						int(uWS::WebSocket<isServer> *ws, int cmd,
+								char *message, size_t length)> handler) {
+			this->_onMessageHandler = handler;
+		}
+
+	private:
+		std::unordered_map<int, msgHandler> _handler;
 };
 
 #endif /* BORKERMESSAGE_H_ */

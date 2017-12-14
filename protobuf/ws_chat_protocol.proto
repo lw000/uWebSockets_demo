@@ -4,44 +4,63 @@ package ws_chat_protocol;
 
 message ws_msg_head
 {
-	int64		time = 1;  	// time
-	int32		rid = 2;  	// rid
-	int32		uid = 3;	// uid
+	int64 time = 1;  	// time
+	int32 rid = 2;  	// rid
+	int32 uid = 3;	// uid
 }
 
 message ws_msg_connected
 {
 	ws_msg_head head = 1;
-	string		msg = 4;	// msg
+	string msg = 4;	// msg
 }
 
 message ws_msg_error
 {
-	int64		time = 1;  	// time
-	int32		code = 2;   // code
-	string		msg = 3;	// msg
+	int64 time = 1;  	// time
+	int32 code = 2;   // code
+	string msg = 3;	// msg
 }
 
 message ws_msg_chat_head
 {
-	int64		time = 1;  	// time
-	int32		rid = 2;  	// rid
-	int32		from = 3;  	// ufrom
-	int32		to = 4;  	// uto
+	int64 time = 1;  	// time
+	int32 rid = 2;  	// rid
+	int32 from = 3;  	// ufrom
+	int32 to = 4;  	// uto
 }
 
 message ws_msg_chat_request
 {
 	ws_msg_chat_head head = 1;
-	string		msg = 2;	// msg
+	string msg = 2;	// msg
 }
 
 message ws_msg_chat_replay
 {
-	int64		time = 1;  	// time
-	int32		from = 2;   // from
-	int32		to = 3;   	// from
-	int32		code = 4;   // code
-	string		msg = 5;	// msg
+	int64 time = 1;  	// time
+	int32 from = 2;   // from
+	int32 to = 3;   	// from
+	int32 code = 4;   // code
+	string msg = 5;	// msg
 }
 
+message ws_msg_userinfo {
+	string full_name = 1;
+	int32 age = 2;
+	int32 sex = 3;
+	string nick_name = 4;
+	string address = 5;
+	int32 uid = 6;
+	int32 rid = 7;
+}
+
+message ws_msg_room_userinfo {
+	repeated ws_msg_userinfo userinfo = 1;
+}
+
+enum EnumMsgStatus {
+	UNKNOWN = 0;
+	READ = 1;
+	UNREAD = 2;
+}

@@ -12,20 +12,28 @@
 
 #include "ws_chat_protocol.pb.h"
 #include "ws_command.h"
+#include "SessionMgr.h"
 
 class ServerBorkerMessage: public BorkerMessage<uWS::SERVER> {
-public:
-	ServerBorkerMessage();
-	virtual ~ServerBorkerMessage();
+	public:
+		SessionMgr session_mgr;
 
-public:
-	int onMessage(uWS::WebSocket<uWS::SERVER> *ws, int cmd, char *message,
-			size_t length) ;
-public:
-	bool onConnected(uWS::WebSocket<uWS::SERVER> *ws, char *message,
-			size_t length);
+	public:
+		ServerBorkerMessage();
+		virtual ~ServerBorkerMessage();
 
-	bool onChat(uWS::WebSocket<uWS::SERVER> *ws, char *message, size_t length);
+	public:
+		int onMessage(uWS::WebSocket<uWS::SERVER> *ws, int cmd, char *message,
+				size_t length);
+		bool onBroadCastMessage(uWS::WebSocket<uWS::SERVER> *ws, char *message,
+						size_t length);
+
+	public:
+		bool onConnected(uWS::WebSocket<uWS::SERVER> *ws, char *message,
+				size_t length);
+
+		bool onChat(uWS::WebSocket<uWS::SERVER> *ws, char *message,
+				size_t length);
 };
 
 #endif /* ServerBorkerMessage_H_ */
