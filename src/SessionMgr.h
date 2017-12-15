@@ -24,10 +24,9 @@ class SessionMgr {
 	public:
 		void addSession(UserSession<uWS::SERVER>* s);
 		void removeSession(UserSession<uWS::SERVER>* s);
-		void removeSession(int rid, int uid);
 
 	public:
-		void foreach(std::function<void(UserSession<uWS::SERVER>* s)> func);
+		void broadcast(int rid, std::function<void(UserSession<uWS::SERVER>* s)> func);
 
 	private:
 		std::unordered_map<int, std::list<UserSession<uWS::SERVER>*>*> _sessions;

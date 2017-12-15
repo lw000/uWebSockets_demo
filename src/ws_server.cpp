@@ -5,6 +5,7 @@
 #include <sstream>
 #include <atomic>
 #include <string>
+#include <algorithm>
 
 #include <uWS/uWS.h>
 
@@ -254,10 +255,8 @@ int test_wb_server(int argc, char** argv) {
 						h.getDefaultGroup<uWS::SERVER>().broadcast(message, length, uWS::OpCode::TEXT);
 					}
 					else {
-						borker.session_mgr.foreach([session, &h, message, length](UserSession<uWS::SERVER>* s) {
-									if (session->rid == s->rid) {
-										s->getWS()->send(message, length, uWS::OpCode::TEXT);
-									}
+						borker.session_mgr.broadcast(session->rid, [message, length](UserSession<uWS::SERVER>* s) {
+									s->getWS()->send(message, length, uWS::OpCode::TEXT);
 								});
 					}
 				}
@@ -270,13 +269,54 @@ int test_wb_server(int argc, char** argv) {
 	h.onHttpRequest(
 			[&borker](uWS::HttpResponse *res, uWS::HttpRequest req, char *data, size_t length, size_t remainingBytes) {
 				std::string url = req.getUrl().toString();
-				LOGFMTD( "url: %s\n", url.c_str());
+				LOGFMTD("url: %s", url.c_str());
+
+/*				Accept-Encoding:gzip, deflate
+				Accept-Language:zh-CN,zh;q=0.9,en;q=0.8
+				Cache-Control:no-cache
+				Connection:Upgrade
+				Host:192.168.204.128:3000
+				Origin:http://192.168.204.128:3000
+				Pragma:no-cache
+				Sec-WebSocket-Extensions:permessage-deflate; client_max_window_bits
+				Sec-WebSocket-Key:aRfL/pSoEdj3FOa8wir1Pw==
+				Sec-WebSocket-Version:13
+				Upgrade:websocket
+				User-Agent:Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36
+				*/
+				{
+					std::string s1 = req.getHeader("accept-encoding").toString();
+					std::string s2 = req.getHeader("accept-language").toString();
+					std::string s3 = req.getHeader("cache-control").toString();
+					std::string s4 = req.getHeader("connection").toString();
+					std::string s5 = req.getHeader("host").toString();
+					std::string s6 = req.getHeader("origin").toString();
+					std::string s7 = req.getHeader("pragma").toString();
+					std::string s8 = req.getHeader("sec-websocket-extensions").toString();
+					std::string s9 = req.getHeader("sec-websocket-key").toString();
+					std::string s10 = req.getHeader("sec-webSocket-version").toString();
+					std::string s11 = req.getHeader("upgrade").toString();
+					std::string s12 = req.getHeader("user-agent").toString();
+
+					LOGFMTD("accept-encoding: %s", s1.c_str());
+					LOGFMTD("accept-language: %s", s2.c_str());
+					LOGFMTD("cache-control: %s", s3.c_str());
+					LOGFMTD("connection: %s", s4.c_str());
+					LOGFMTD("host: %s", s5.c_str());
+					LOGFMTD("origin: %s", s6.c_str());
+					LOGFMTD("pragma: %s", s7.c_str());
+					LOGFMTD("sec-websocket-extensions: %s", s8.c_str());
+					LOGFMTD("sec-websocket-key: %s", s9.c_str());
+					LOGFMTD("sec-webSocket-version: %s", s10.c_str());
+					LOGFMTD("upgrade: %s", s11.c_str());
+					LOGFMTD("user-agent: %s", s12.c_str());
+				}
 
 				if (req.getMethod() == uWS::HttpMethod::METHOD_GET) {
 
 				}
 				else if (req.getMethod() == uWS::HttpMethod::METHOD_POST) {
-					if (data != NULL) {
+					if (data != nullptr) {
 						LOGFMTD("length:%lld, data:%s", length, data);
 					}
 					else {
@@ -294,6 +334,9 @@ int test_wb_server(int argc, char** argv) {
 					query = readURLField(url.c_str(), purl.query);
 				}
 
+				std::transform(path.begin(), path.end(), path.begin(), std::towlower);
+				std::transform(query.begin(), query.end(), query.begin(), std::towlower);
+
 				if (!path.empty()) {
 					if (path.compare("/") == 0) {
 						res->end(__g_index_html.str().data(), __g_index_html.str().length());
@@ -301,17 +344,13 @@ int test_wb_server(int argc, char** argv) {
 					else if (path.compare("room_user_count") == 0) {
 
 					}
-					else if (path.compare("mul") == 0) {
-
-					}
 					else {
 
 					}
 				}
-
 			});
 
-	h.getDefaultGroup<uWS::SERVER>().startAutoPing(10000);
+	h.getDefaultGroup<uWS::SERVER>().startAutoPing(30000);
 
 	if (h.listen(3000)) {
 		LOGD("Success to listen 3000");
