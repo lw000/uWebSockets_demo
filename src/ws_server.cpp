@@ -270,20 +270,6 @@ int test_wb_server(int argc, char** argv) {
 			[&borker](uWS::HttpResponse *res, uWS::HttpRequest req, char *data, size_t length, size_t remainingBytes) {
 				std::string url = req.getUrl().toString();
 				LOGFMTD("url: %s", url.c_str());
-
-/*				Accept-Encoding:gzip, deflate
-				Accept-Language:zh-CN,zh;q=0.9,en;q=0.8
-				Cache-Control:no-cache
-				Connection:Upgrade
-				Host:192.168.204.128:3000
-				Origin:http://192.168.204.128:3000
-				Pragma:no-cache
-				Sec-WebSocket-Extensions:permessage-deflate; client_max_window_bits
-				Sec-WebSocket-Key:aRfL/pSoEdj3FOa8wir1Pw==
-				Sec-WebSocket-Version:13
-				Upgrade:websocket
-				User-Agent:Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36
-				*/
 				{
 					std::string s1 = req.getHeader("accept-encoding").toString();
 					std::string s2 = req.getHeader("accept-language").toString();
