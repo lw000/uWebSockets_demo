@@ -9,9 +9,7 @@
 
 #include <uWS/uWS.h>
 
-#include "utils.h"
-
-#include "log4z.h"
+#include <log4z/log4z.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -21,6 +19,8 @@ extern "C" {
 #ifdef __cplusplus
 }
 #endif
+
+#include "utils.h"
 
 #include "rapidjson/rapidjson.h"
 #include "rapidjson/document.h"

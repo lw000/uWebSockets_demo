@@ -20,15 +20,15 @@
 							<targetPlatform id="cdt.managedbuild.target.gnu.platform.exe.debug.936512347" name="Debug Platform" superClass="cdt.managedbuild.target.gnu.platform.exe.debug"/>
 							<builder buildPath="${workspace_loc:/uWebSockets_demo}/Debug" id="cdt.managedbuild.target.gnu.builder.exe.debug.455754651" keepEnvironmentInBuildfile="false" managedBuildOn="true" name="Gnu Make Builder" superClass="cdt.managedbuild.target.gnu.builder.exe.debug"/>
 							<tool id="cdt.managedbuild.tool.gnu.archiver.base.976315095" name="GCC Archiver" superClass="cdt.managedbuild.tool.gnu.archiver.base"/>
-							<tool command="g++ -Wl,--no-as-needed -pthread  -std=c++11" id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1011331308" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug">
+							<tool command="g++ -Wl,--no-as-needed -pthread -std=c++11" id="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1011331308" name="GCC C++ Compiler" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug">
 								<option id="gnu.cpp.compiler.exe.debug.option.optimization.level.1938256218" name="Optimization Level" superClass="gnu.cpp.compiler.exe.debug.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.exe.debug.option.debugging.level.552557968" name="Debug Level" superClass="gnu.cpp.compiler.exe.debug.option.debugging.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.debugging.level.max" valueType="enumerated"/>
 								<option id="gnu.cpp.compiler.option.include.paths.780637656" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
 									<listOptionValue builtIn="false" value="/usr/include/c++/4.8.5"/>
 									<listOptionValue builtIn="false" value="/usr/include"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/uWebSockets_demo/protobuf}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lw_common/include}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lw_common/json}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/uWebSockets_demo/json}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/uWebSockets_demo/utils}&quot;"/>
 								</option>
 								<option id="gnu.cpp.compiler.option.other.other.1592323477" name="Other flags" superClass="gnu.cpp.compiler.option.other.other" useByScannerDiscovery="false" value="-c -fmessage-length=0" valueType="string"/>
 								<option id="gnu.cpp.compiler.option.dialect.std.469663813" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.cpp.compiler.dialect.default" valueType="enumerated"/>
@@ -48,7 +48,7 @@
 									<listOptionValue builtIn="false" value="/usr/include"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/uWebSockets_demo/protobuf}&quot;"/>
 									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/uWebSockets_demo/json}&quot;"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lw_common/include}&quot;"/>
+									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/uWebSockets_demo/utils}&quot;"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.1045586675" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
@@ -59,8 +59,8 @@
 									<listOptionValue builtIn="false" value="/usr/lib64/libuuid.so"/>
 									<listOptionValue builtIn="false" value="/usr/local/lib/libprotobuf.a"/>
 									<listOptionValue builtIn="false" value="/usr/local/lib/libz.a"/>
-									<listOptionValue builtIn="false" value="&quot;${workspace_loc:/lw_common/Debug/liblw_common.a}&quot;"/>
 									<listOptionValue builtIn="false" value="/usr/local/openssl/lib/libssl.a"/>
+									<listOptionValue builtIn="false" value="/usr/local/lib/liblog4z.a"/>
 									<listOptionValue builtIn="false" value="/usr/local/openssl/lib/libcrypto.a"/>
 								</option>
 								<option id="gnu.cpp.link.option.flags.146816003" name="Linker flags" superClass="gnu.cpp.link.option.flags" useByScannerDiscovery="false" value="-ldl" valueType="string"/>
@@ -88,6 +88,7 @@
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="protobuf"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="utils"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -140,6 +141,7 @@
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="protobuf"/>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="utils"/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>
@@ -160,6 +162,14 @@
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
 	<storageModule moduleId="org.eclipse.cdt.internal.ui.text.commentOwnerProjectMappings"/>
-	<storageModule moduleId="scannerConfiguration"/>
 	<storageModule moduleId="org.eclipse.cdt.core.pathentry"/>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.437955413;cdt.managedbuild.config.gnu.exe.debug.437955413.;cdt.managedbuild.tool.gnu.cpp.compiler.exe.debug.1011331308;cdt.managedbuild.tool.gnu.cpp.compiler.input.1544980704">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="cdt.managedbuild.config.gnu.exe.debug.437955413;cdt.managedbuild.config.gnu.exe.debug.437955413.;cdt.managedbuild.tool.gnu.c.compiler.exe.debug.369850256;cdt.managedbuild.tool.gnu.c.compiler.input.1045586675">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+	</storageModule>
 </cproject>

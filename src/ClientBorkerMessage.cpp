@@ -14,7 +14,7 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/writer.h"
 
-#include "log4z.h"
+#include <log4z/log4z.h>
 
 ClientBorkerMessage::ClientBorkerMessage() {
 	this->setOnMessageCallback(

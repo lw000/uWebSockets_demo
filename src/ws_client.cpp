@@ -16,7 +16,7 @@
 
 #include <uWS/uWS.h>
 
-#include "log4z.h"
+#include <log4z/log4z.h>
 
 #include "ws_command.h"
 #include "ws_chat_protocol.pb.h"
